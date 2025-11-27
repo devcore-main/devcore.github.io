@@ -1,502 +1,435 @@
-
 <!doctype html>
-<html lang="ar" dir="rtl">
+
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>DevCore — تعلم البرمجة عملياً</title>
-  <meta name="description" content="DevCore — منصة تعليم برمجة عملية، مشاريع، وتمارين." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DevCore — Community</title>
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#06b6d4;--muted:#9aa4b2;--glass: rgba(255,255,255,0.03)}
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font-family:Inter, 'Segoe UI', Tahoma, Roboto, "Helvetica Neue", Arial; background:linear-gradient(180deg,#071026 0%, #071126 60%);color:#e6eef6;direction:rtl}
-    .container{max-width:1100px;margin:0 auto;padding:28px}
-
-    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-    .brand{display:flex;align-items:center;gap:10px}
-    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:flex;align-items:center;justify-content:center;font-weight:700;color:#042;box-shadow:0 6px 18px rgba(6,182,212,0.12)}
-    nav a{color:var(--muted);text-decoration:none;margin-left:12px;font-weight:600}
-    nav a:hover{color:#fff}
-
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:12px}
-    .hero-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:26px;border-radius:14px;box-shadow:0 6px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
-    h1{margin:0 0 8px;font-size:34px;line-height:1.05}
-    p.lead{margin:0;color:var(--muted)}
-    .cta{margin-top:18px;display:flex;gap:10px}
-    .btn{padding:10px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
-    .btn-primary{background:linear-gradient(90deg,var(--accent),#7c3aed);color:#042}
-    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-
-    .card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
-    .course{background:var(--card);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-    .course h3{margin:0 0 6px;font-size:16px}
-    .course p{margin:0;color:var(--muted);font-size:13px}
-
-    aside.right{position:relative}
-    .feature-list{display:flex;flex-direction:column;gap:10px}
-    .feature{background:var(--glass);padding:12px;border-radius:10px}
-
-    section#projects{margin-top:26px}
-    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .project{background:var(--card);padding:12px;border-radius:8px}
-
-    footer{margin-top:34px;padding:18px;border-top:1px solid rgba(255,255,255,0.03);color:var(--muted);display:flex;justify-content:space-between;align-items:center}
-
-    /* responsive */
-    @media (max-width:960px){
-      .hero{grid-template-columns:1fr}
-      .projects-grid{grid-template-columns:repeat(2,1fr)}
-      .card-grid{grid-template-columns:1fr}
+    :root{
+      --bg:#000000;
+      --card:#0b0b0b;
+      --neon:#9b5cff; /* neon purple */
+      --muted:#bfc4d4;
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+      font-family: Inter, system-ui, Arial, sans-serif;
     }
-    @media (max-width:560px){
-      .projects-grid{grid-template-columns:1fr}
-      header{flex-direction:column;align-items:flex-start;gap:12px}
-    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#000 0%,#060006 100%);color:var(--muted)}
+    .container{max-width:1100px;margin:0 auto;padding:24px}/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{background:linear-gradient(90deg,var(--neon),#6ee7b7);padding:8px 12px;border-radius:8px;color:#000;font-weight:800}
+.menu{display:flex;gap:12px;align-items:center}
+.menu a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:8px}
+.menu a:hover{background:rgba(155,92,255,0.10);color:#fff}
+.btn{background:var(--neon);color:#000;padding:8px 12px;border-radius:10px;border:none;cursor:pointer}
+.ghost{background:transparent;border:1px solid rgba(155,92,255,0.25);padding:8px 10px;border-radius:8px;color:var(--muted)}
 
-    /* small util */
-    .tag{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:700;color:var(--muted);font-size:12px}
-    .muted{color:var(--muted)}
-    .pill{font-size:12px;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,0.25)}
-    .search{display:flex;gap:8px;align-items:center}
-    input.search-input{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:10px;color:#e6eef6}
+/* Hero */
+.hero{display:flex;gap:20px;align-items:center;padding:40px 0}
+.hero-left{flex:1}
+.hero-right{flex:1;text-align:center}
+.card{background:var(--card);padding:18px;border-radius:var(--radius);box-shadow:0 6px 20px rgba(155,92,255,0.06);border:1px solid rgba(155,92,255,0.06)}
+h1{color:white;margin:0 0 12px 0}
+p.lead{color:var(--muted);margin:0}
 
-    /* admin styles */
-    .admin-panel{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);margin-top:18px}
-    .tabs{display:flex;gap:8px;flex-wrap:wrap}
-    .tab{padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.02);cursor:pointer}
-    .tab.active{background:linear-gradient(90deg,var(--accent),#7c3aed);color:#042}
-    table{width:100%;border-collapse:collapse;margin-top:12px}
-    th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:right}
-    .small{font-size:12px;color:var(--muted)}
-    .controls{display:flex;gap:8px;flex-wrap:wrap}
-    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03)}
-    .hidden{display:none}
-    .panel-row{display:flex;justify-content:space-between;gap:8px;align-items:center}
+/* Services grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:20px}
+.svc{padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(155,92,255,0.04),transparent);border:1px solid rgba(155,92,255,0.06)}
+.svc h3{margin:0 0 6px 0;color:white}
+.svc p{margin:0;color:var(--muted)}
+
+/* Courses list */
+.course-list{margin-top:20px}
+.course{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;margin-bottom:10px;background:var(--glass);border:1px solid rgba(155,92,255,0.04)}
+.course .meta{display:flex;gap:12px;align-items:center}
+.tag{padding:6px 8px;border-radius:8px;background:rgba(155,92,255,0.12);color:var(--neon);font-weight:700}
+
+/* Modal / panels */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6)}
+.modal.active{display:flex}
+.modal .panel{width:90%;max-width:720px;background:#07070a;padding:18px;border-radius:12px}
+
+/* Forms */
+.form-row{display:flex;gap:8px}
+input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:#0d0d0e;color:var(--muted)}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.small{font-size:13px;color:#a6a6b3}
+
+/* Responsive */
+@media (max-width:900px){.hero{flex-direction:column}.menu{display:none}.mobile-menu-btn{display:block}}
+
+/* RTL support */
+html[dir=rtl] {direction:rtl}
+html[dir=rtl] .brand{flex-direction:row-reverse}
+html[dir=rtl] .menu a{padding-right:6px;padding-left:6px}
+
+/* admin badge */
+.badge{background:var(--neon);padding:6px 8px;border-radius:8px;color:#000;font-weight:700}
+
+footer{margin-top:40px;padding:20px 0;color:#888;text-align:center}
+
   </style>
 </head>
 <body>
-  <div class="container" id="main-container">
-    <header>
+  <div class="container">
+    <nav class="nav">
       <div class="brand">
-        <div class="logo">DC</div>
-        <div>
-          <div style="font-weight:800">DevCore</div>
-          <div class="muted" style="font-size:12px">تعلم البرمجة عملياً — مشاريع وتمارين</div>
-        </div>
-      </div>
-      <nav>
-        <a href="#courses">الكورسات</a>
-        <a href="#projects">المشاريع</a>
-        <a href="#about">عن DevCore</a>
-        <a href="#contact">تواصل</a>
-        <a href="#admin" onclick="openAdmin(event)">الادمن</a>
-      </nav>
-    </header>
-
-    <main class="hero" id="public-area">
-      <div class="hero-card">
-        <h1>ابدأ تتعلم البرمجة بطريقة عملية مع <span style="color:var(--accent)">DevCore</span></h1>
-        <p class="lead">كورسات قصيرة، مشاريع تطبيقية، وتمارين عملية تقدر تنفّذها حتى لو بتشتغل من موبايل باستخدام Termux. مناسب للمبتدئين واللي عايزين يدخلوا مجال السيبر وسيستمز.</p>
-
-        <div class="cta">
-          <button class="btn btn-primary" onclick="scrollToSection('courses')">ابدأ كورس مجاني</button>
-          <button class="btn btn-ghost" onclick="scrollToSection('projects')">شوف المشاريع</button>
-        </div>
-
-        <div class="card-grid">
-          <div class="course">
-            <h3>مستوى 1 — أساسيات Python</h3>
-            <p>متغيرات، حلقات، دوال، و 3 مشاريع عملية.</p>
-          </div>
-          <div class="course">
-            <h3>مستوى 2 — Web Development</h3>
-            <p>HTML, CSS, JavaScript, Flask وAPI بسيط.</p>
-          </div>
-        </div>
-
-        <p class="muted" style="margin-top:12px;font-size:13px">نصيحة: ابدأ بمشروع صغير وحطه على GitHub — هتتعلم أسرع بكتيير.</p>
-      </div>
-
-      <aside class="right">
-        <div class="feature-list">
-          <div class="feature">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div>
-                <div class="tag">مجاني</div>
-                <div style="font-weight:700;margin-top:8px">سلسلة دروس عملية</div>
-              </div>
-              <div style="text-align:right">
-                <div class="pill">وقت القراءة: قليل</div>
-                <div class="muted" style="font-size:12px">بدء فوراً</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="feature">
-            <div style="font-weight:700">بيئة عمل مبسطة</div>
-            <div class="muted" style="font-size:13px;margin-top:6px">شرح خطوة بخطوة للعمل على Termux وGitHub</div>
-          </div>
-
-          <div class="feature">
-            <div style="font-weight:700">شهادات داخلية</div>
-            <div class="muted" style="font-size:13px;margin-top:6px">Badge بسيط لكل مشروع تكمله</div>
-          </div>
-        </div>
-
-        <div style="margin-top:14px;background:var(--card);padding:12px;border-radius:10px">
-          <div style="font-weight:800">انضم للمجتمع</div>
-          <div class="muted" style="font-size:13px;margin-top:6px">قريباً: قناة تليجرام وسيرفر ديسكورد لمشاركة المشاريع</div>
-          <div style="margin-top:8px"><button class="btn btn-ghost" onclick="alert('هنتواصل قريباً — ممكن نعمل سيرفر ديسكورد')">اشترك</button></div>
-        </div>
-      </aside>
-    </main>
-
-    <section id="courses">
-      <h2 style="margin-top:20px">الكورسات</h2>
-      <div class="card-grid">
-        <div class="course">
-          <h3>Python — للمبتدئين</h3>
-          <p class="muted">10 دروس + 3 مشاريع. مدة كل درس: 10-20 دقيقة.</p>
-        </div>
-        <div class="course">
-          <h3>Web Dev — Intro</h3>
-          <p class="muted">HTML, CSS, JavaScript, وMini backend بـ Flask.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="projects">
-      <h2 style="margin-top:20px">مشاريع جاهزة</h2>
-      <div class="projects-grid" style="margin-top:10px">
-        <div class="project">
-          <strong>1) To-Do App</strong>
-          <div class="muted" style="font-size:13px">HTML/CSS + LocalStorage</div>
-        </div>
-        <div class="project">
-          <strong>2) Net Scanner (basic)</strong>
-          <div class="muted" style="font-size:13px">Python + sockets + scapy (lab)</div>
-        </div>
-        <div class="project">
-          <strong>3) Personal Portfolio</strong>
-          <div class="muted" style="font-size:13px">Deploy on GitHub Pages</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about">
-      <h2 style="margin-top:20px">عن DevCore</h2>
-      <p class="muted">DevCore اتعمل مخصوص علشان الناس اللي عايزة تتعلم عملي وبالطريقة الصح — مشاريع صغيرة، شرح بسيط، وتركيز على اللي هيفيدك فعلاً في الشغل.</p>
-    </section>
-
-    <section id="contact">
-      <h2 style="margin-top:20px">تواصل معانا</h2>
-      <form id="contact-form" style="display:flex;flex-direction:column;gap:8px;max-width:520px">
-        <input id="name" placeholder="اسمك" required style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef6">
-        <input id="email" placeholder="ايميلك" type="email" required style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef6">
-        <textarea id="msg" placeholder="اكتب رسالتك" rows="4" style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef6"></textarea>
-        <div><button class="btn btn-primary" id="send-contact">ابعث رسالة</button></div>
-      </form>
-    </section>
-
-    <!-- Admin Panel (hidden by default) -->
-    <section id="admin-panel" class="hidden">
-      <div class="admin-panel">
-        <div class="panel-row">
-          <div>
-            <div style="font-weight:800">لوحة التحكم — Admin</div>
-            <div class="small">email: <span id="admin-email">devcore.communicate@gmail.com</span> | pay_id: <span id="admin-pay">dev_core_26.11.2025</span> | SN: <span id="admin-sn">10002</span></div>
-          </div>
-          <div class="controls">
-            <button class="btn btn-ghost" onclick="logoutAdmin()">خروج</button>
-            <button class="btn btn-ghost" onclick="exportData()">تصدير بيانات (JSON)</button>
-            <button class="btn btn-ghost" onclick="importDataPrompt()">استيراد بيانات</button>
-          </div>
-        </div>
-
-        <div style="margin-top:12px" class="tabs" id="admin-tabs">
-          <div class="tab active" data-tab="overview" onclick="switchTab(event)">Overview</div>
-          <div class="tab" data-tab="purchases" onclick="switchTab(event)">Purchases</div>
-          <div class="tab" data-tab="contacts" onclick="switchTab(event)">Contacts</div>
-          <div class="tab" data-tab="courses" onclick="switchTab(event)">Courses</div>
-          <div class="tab" data-tab="users" onclick="switchTab(event)">Users</div>
-        </div>
-
-        <div id="tab-content" style="margin-top:14px">
-          <!-- overview -->
-          <div id="overview" class="tab-pane">
-            <div style="display:flex;gap:12px;flex-wrap:wrap">
-              <div class="badge">Users: <span id="count-users">0</span></div>
-              <div class="badge">Purchases: <span id="count-purchases">0</span></div>
-              <div class="badge">Messages: <span id="count-messages">0</span></div>
-              <div class="badge">Courses: <span id="count-courses">0</span></div>
-            </div>
-          </div>
-
-          <!-- purchases -->
-          <div id="purchases" class="tab-pane hidden">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div class="small">قائمة المشتريات المسجلة (محلياً)</div>
-              <div><button class="btn btn-primary" onclick="addDummyPurchase()">اضف عملية وهمية</button></div>
-            </div>
-            <table id="purchases-table">
-              <thead>
-                <tr><th>حالة</th><th>المبلغ</th><th>البريد</th><th>الاسم</th><th>تاريخ</th><th>الرقم</th></tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-
-          <!-- contacts -->
-          <div id="contacts" class="tab-pane hidden">
-            <div class="small">رسائل من فورم التواصل</div>
-            <table id="contacts-table">
-              <thead><tr><th>الرسالة</th><th>البريد</th><th>الاسم</th><th>التاريخ</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-
-          <!-- courses -->
-          <div id="courses" class="tab-pane hidden">
-            <div style="display:flex;gap:8px;align-items:center">
-              <input id="course-title" placeholder="عنوان الكورس" style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef6">
-              <input id="course-desc" placeholder="وصف قصير" style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef6">
-              <button class="btn btn-primary" onclick="addCourse()">اضف كورس</button>
-            </div>
-            <table id="courses-table">
-              <thead><tr><th>العمليات</th><th>الوصف</th><th>العنوان</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-
-          <!-- users -->
-          <div id="users" class="tab-pane hidden">
-            <div class="small">قائمة المستخدمين (محلياً)</div>
-            <table id="users-table"><thead><tr><th>الايميل</th><th>الاسم</th><th>مجموع الشراء</th></tr></thead><tbody></tbody></table>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <footer>
-      <div>© DevCore 2025 — مصمم بواسطة Yusuf</div>
-      <div class="muted">ابدأ دلوقتي — انشر مشروعك على GitHub</div>
-    </footer>
+        <div class="logo">DevCore</div>
+        <div style="color:var(--muted)">Community</div>
+      </div><div class="menu" id="navMenu">
+    <a href="#home" data-link>Home</a>
+    <a href="#services" data-link>Services</a>
+    <a href="#courses" data-link>Courses</a>
+    <a href="#contact" data-link>Contact</a>
   </div>
 
-  <script>
-    // ---- Config (admin credentials & serial) ----
-    const ADMIN_EMAIL = 'devcore.communicate@gmail.com';
-    const ADMIN_PASSWORD = 'dev_core_26.11.2025'; // as requested (used as login password)
-    const SERIAL_NUMBER = '10002';
+  <div style="display:flex;gap:10px;align-items:center">
+    <select id="langSwitch" class="ghost small">
+      <option value="en">EN</option>
+      <option value="ar">AR</option>
+    </select>
+    <button class="ghost" id="btnLogin">Log In</button>
+    <button class="btn" id="btnSignUp">Sign Up</button>
+  </div>
+</nav>
 
-    // Utils: storage keys
-    const LS_KEYS = {
-      users: 'dc_users_v1',
-      contacts: 'dc_contacts_v1',
-      purchases: 'dc_purchases_v1',
-      courses: 'dc_courses_v1'
-    };
+<!-- HERO -->
+<section id="home" class="hero">
+  <div class="hero-left">
+    <h1>DevCore — Professional dev community</h1>
+    <p class="lead">Game Dev (Godot), Cyber Security, Web (Frontend) and more. Multi pages, paid courses, and a clean dark neon style.</p>
+    <div style="margin-top:16px">
+      <button class="btn" id="joinNow">Join Community</button>
+      <button class="ghost" id="viewCourses">View Courses</button>
+    </div>
+  </div>
+  <div class="hero-right card">
+    <h3 style="color:var(--neon)">Featured</h3>
+    <p class="small">Top course: Godot — Build a 2D Platformer</p>
+    <div style="margin-top:12px">
+      <div class="tag">Game Dev — Godot</div>
+    </div>
+  </div>
+</section>
 
-    // initialize sample data if not present
-    function ensureInit(){
-      if(!localStorage.getItem(LS_KEYS.users)){
-        const u = [{name:'Demo User',email:'demo@devcore.local',purchases:0}];
-        localStorage.setItem(LS_KEYS.users,JSON.stringify(u));
-      }
-      if(!localStorage.getItem(LS_KEYS.courses)){
-        const c = [{title:'Python — للمبتدئين',desc:'10 دروس + 3 مشاريع'},{title:'Web Dev — Intro',desc:'HTML, CSS, JS'}];
-        localStorage.setItem(LS_KEYS.courses,JSON.stringify(c));
-      }
-      if(!localStorage.getItem(LS_KEYS.purchases)){
-        localStorage.setItem(LS_KEYS.purchases,JSON.stringify([]));
-      }
-      if(!localStorage.getItem(LS_KEYS.contacts)){
-        localStorage.setItem(LS_KEYS.contacts,JSON.stringify([]));
-      }
-    }
-    ensureInit();
+<!-- SERVICES -->
+<section id="services">
+  <h2 style="color:white">Services</h2>
+  <div class="grid">
+    <div class="svc card">
+      <h3>Game Development (Godot)</h3>
+      <p>Godot engine tutorials, templates, and project reviews.</p>
+      <div style="margin-top:10px"><button class="btn" data-service="game" onclick="openService('game')">View</button></div>
+    </div>
+    <div class="svc card">
+      <h3>Cyber Security</h3>
+      <p>CTF practice, pentest labs, vulnerability writeups.</p>
+      <div style="margin-top:10px"><button class="btn" data-service="cyber" onclick="openService('cyber')">View</button></div>
+    </div>
+    <div class="svc card">
+      <h3>Web Development (Frontend)</h3>
+      <p>HTML/CSS/JS, React basics, and advanced frontend topics.</p>
+      <div style="margin-top:10px"><button class="btn" data-service="web" onclick="openService('web')">View</button></div>
+    </div>
+    <div class="svc card">
+      <h3>Mentorship & Code Review</h3>
+      <p>1-on-1 sessions, portfolio reviews, and collaboration.</p>
+      <div style="margin-top:10px"><button class="btn" data-service="ment" onclick="openService('ment')">View</button></div>
+    </div>
+  </div>
+</section>
 
-    // Public: contact form -> save to localStorage
-    document.getElementById('contact-form').addEventListener('submit', function(e){
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const msg = document.getElementById('msg').value.trim();
-      if(!name||!email||!msg){ alert('من فضلك املأ الحقول'); return; }
-      const contacts = JSON.parse(localStorage.getItem(LS_KEYS.contacts)||'[]');
-      const item = {name,email,msg,date:new Date().toISOString()};
-      contacts.unshift(item);
-      localStorage.setItem(LS_KEYS.contacts,JSON.stringify(contacts));
-      alert('شكراً '+name+'! هنتواصل معاك قريباً.');
-      e.target.reset();
-      refreshAdminCounts();
+<!-- COURSES -->
+<section id="courses">
+  <h2 style="color:white">Courses</h2>
+  <div class="course-list" id="courseList"></div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 style="color:white">Contact</h2>
+  <div class="card" style="margin-top:12px">
+    <label>Name</label>
+    <input id="contactName">
+    <label>Email</label>
+    <input id="contactEmail">
+    <label>Message</label>
+    <textarea id="contactMsg"></textarea>
+    <div style="margin-top:8px"><button class="btn" onclick="sendContact()">Send</button></div>
+  </div>
+</section>
+
+<footer>
+  DevCore © <span id="year"></span> — Powered by Seif Elden Ghalib 
+</footer>
+
+  </div>  <!-- Modals -->  <div class="modal" id="authModal">
+    <div class="panel card">
+      <h3 id="authTitle">Sign Up</h3>
+      <div id="authForms">
+        <label>Email</label>
+        <input id="authEmail">
+        <label>Password</label>
+        <input id="authPass" type="password">
+        <label>Display name</label>
+        <input id="authName">
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn" id="authSubmit">Create</button>
+          <button class="ghost" onclick="closeModal('authModal')">Cancel</button>
+        </div>
+        <p class="small" style="margin-top:10px">Tip: use <strong>admin@devcore.test</strong> to become admin locally.</p>
+      </div>
+    </div>
+  </div>  <div class="modal" id="courseModal">
+    <div class="panel card">
+      <div id="coursePanelContent"></div>
+      <div style="margin-top:10px;display:flex;gap:8px"><button class="ghost" onclick="closeModal('courseModal')">Close</button></div>
+    </div>
+  </div>  <div class="modal" id="payModal">
+    <div class="panel card">
+      <h3>Pay for Course</h3>
+      <div id="payPanel"></div>
+      <div style="margin-top:12px"><button class="btn" id="doPayBtn">Pay (Simulate)</button> <button class="ghost" onclick="closeModal('payModal')">Cancel</button></div>
+    </div>
+  </div>  <!-- Admin dashboard quick panel -->  <div class="modal" id="adminModal">
+    <div class="panel card">
+      <h3>Admin Dashboard</h3>
+      <label>Course title</label>
+      <input id="admTitle">
+      <label>Short description</label>
+      <input id="admDesc">
+      <label>Price</label>
+      <input id="admPrice">
+      <label>Videos (title|url , separate with \n)</label>
+      <textarea id="admVideos" placeholder="Playthrough|https://...\nLesson 2|https://..."></textarea>
+      <div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="adminAddCourse()">Add Course</button><button class="ghost" onclick="closeModal('adminModal')">Close</button></div>
+    </div>
+  </div><script>
+  /* ---------- Simple client-only implementation (localStorage) ---------- */
+  const DEFAULT_COURSES = [
+    {id:'godot-2d',title:'Godot — 2D Platformer',desc:'Build a complete 2D platformer with Godot.',price:'50.00',videos:[{title:'Intro',url:'https://example.com/vid1'},{title:'Player',url:'https://example.com/vid2'}],service:'game'},
+    {id:'cyber-101',title:'Intro to Cyber Security',desc:'Basics of web hacking and CTFs.',price:'30.00',videos:[{title:'Recon',url:'https://example.com/ctf1'}],service:'cyber'},
+    {id:'frontend-pro',title:'Frontend Essentials',desc:'HTML/CSS/JS and modern patterns.',price:'40.00',videos:[{title:'HTML',url:'https://example.com/html1'}],service:'web'}
+  ];
+
+  // init
+  if(!localStorage.getItem('devcore_courses')) localStorage.setItem('devcore_courses',JSON.stringify(DEFAULT_COURSES));
+  if(!localStorage.getItem('devcore_user')) localStorage.setItem('devcore_user','null');
+
+  const state = {
+    courses: JSON.parse(localStorage.getItem('devcore_courses')||'[]'),
+    user: JSON.parse(localStorage.getItem('devcore_user')),
+    lang: localStorage.getItem('devcore_lang') || 'en'
+  };
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Render courses
+  function renderCourses(){
+    const el = document.getElementById('courseList');el.innerHTML='';
+    state.courses.forEach(c=>{
+      const div = document.createElement('div');div.className='course';
+      div.innerHTML = `
+        <div class="meta">
+          <div>
+            <div style="font-weight:700;color:white">${c.title}</div>
+            <div class="small">${c.desc}</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="tag">${c.price}</div>
+          <button class="btn" onclick="openCourse('${c.id}')">Enroll Now</button>
+        </div>`;
+      el.appendChild(div);
     });
+  }
+  renderCourses();
 
-    // Admin auth (simple, client-side). Prompts for credentials.
-    function openAdmin(e){
-      if(e) e.preventDefault();
-      // check session
-      if(sessionStorage.getItem('dc_admin_auth')==='1'){
-        showAdminPanel();
-        return;
+  // Nav links
+  document.querySelectorAll('[data-link]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1);document.getElementById(id).scrollIntoView({behavior:'smooth'});}));
+
+  // Auth modal
+  document.getElementById('btnSignUp').addEventListener('click',()=>openAuth('signup'));
+  document.getElementById('btnLogin').addEventListener('click',()=>openAuth('login'));
+
+  function openAuth(mode){
+    document.getElementById('authModal').classList.add('active');
+    document.getElementById('authTitle').textContent = mode==='signup'? 'Sign Up' : 'Log In';
+    document.getElementById('authSubmit').textContent = mode==='signup'? 'Create' : 'Log In';
+    document.getElementById('authSubmit').onclick = ()=>mode==='signup'? doSignUp():doLogin();
+  }
+  function closeModal(id){document.getElementById(id).classList.remove('active');}
+
+  function doSignUp(){
+    const email = document.getElementById('authEmail').value.trim();
+    const pass = document.getElementById('authPass').value;
+    const name = document.getElementById('authName').value||email.split('@')[0];
+    if(!email||!pass){alert('Provide email and password');return}
+    const user = {email,name,paidCourses:[]};
+    if(email==='admin@devcore.test') user.isAdmin = true;
+    localStorage.setItem('devcore_user',JSON.stringify(user));state.user=user;updateAuthUI();closeModal('authModal');
+    alert('Account created (local demo).');
+  }
+  function doLogin(){
+    const email = document.getElementById('authEmail').value.trim();
+    const pass = document.getElementById('authPass').value;
+    // demo: accept any email/password
+    if(!email||!pass){alert('Provide email and password');return}
+    // load previous user if same email
+    const saved = JSON.parse(localStorage.getItem('devcore_user'));
+    let user = saved && saved.email===email? saved : {email,name:email.split('@')[0],paidCourses:[]};
+    if(email==='admin@devcore.test') user.isAdmin = true;
+    localStorage.setItem('devcore_user',JSON.stringify(user));state.user=user;updateAuthUI();closeModal('authModal');
+    alert('Logged in (local demo).');
+  }
+
+  function updateAuthUI(){
+    const u = JSON.parse(localStorage.getItem('devcore_user'));
+    state.user = u;
+    if(u && u.email){
+      document.getElementById('btnLogin').textContent = u.email;
+      document.getElementById('btnSignUp').textContent = 'Profile';
+      document.getElementById('btnSignUp').onclick = ()=>openProfile();
+      document.getElementById('btnLogin').onclick = ()=>{
+        if(u.isAdmin) openAdmin(); else openProfile();
       }
-      const email = prompt('ادخل ايميل الادمن:').trim();
-      const pass = prompt('ادخل كلمة المرور (pay_id):').trim();
-      if(email===ADMIN_EMAIL && pass===ADMIN_PASSWORD){
-        sessionStorage.setItem('dc_admin_auth','1');
-        showAdminPanel();
-      } else {
-        alert('بيانات دخول خاطئة');
-      }
+    } else {
+      document.getElementById('btnLogin').textContent = 'Log In';
+      document.getElementById('btnSignUp').textContent = 'Sign Up';
+      document.getElementById('btnSignUp').onclick = ()=>openAuth('signup');
+      document.getElementById('btnLogin').onclick = ()=>openAuth('login');
     }
-    function logoutAdmin(){ sessionStorage.removeItem('dc_admin_auth'); hideAdminPanel(); alert('تم تسجيل الخروج'); }
+  }
+  updateAuthUI();
 
-    function showAdminPanel(){
-      document.getElementById('admin-panel').classList.remove('hidden');
-      document.getElementById('public-area').classList.add('hidden');
-      scrollToSection('admin-panel');
-      renderAllAdmin();
+  function openProfile(){
+    const u = state.user; if(!u){openAuth('login');return}
+    const content = `
+      <h3>Profile</h3>
+      <p><strong>Email:</strong> ${u.email}</p>
+      <p><strong>Name:</strong> ${u.name}</p>
+      <p><strong>Paid courses:</strong> ${(u.paidCourses||[]).join(', ') || 'None'}</p>
+      <div style="margin-top:10px"><button class='btn' onclick="logout()">Log Out</button></div>
+    `;
+    document.getElementById('coursePanelContent').innerHTML = content;document.getElementById('courseModal').classList.add('active');
+  }
+  function logout(){localStorage.setItem('devcore_user','null');state.user=null;updateAuthUI();closeModal('courseModal');alert('Logged out');}
+
+  // Courses
+  function openCourse(id){
+    const course = state.courses.find(c=>c.id===id);
+    if(!course){alert('Course not found');return}
+    const content = `
+      <h3 style="color:var(--neon)">${course.title}</h3>
+      <p>${course.desc}</p>
+      <p class="small">Price: ${course.price}</p>
+      <div style="margin-top:12px">
+        <button class='btn' onclick="startPayment('${id}')">${'Pay & Enroll'}</button>
+        <button class='ghost' onclick="renderCourseContent('${id}')">Open Course Page</button>
+      </div>
+    `;
+    document.getElementById('coursePanelContent').innerHTML = content;document.getElementById('courseModal').classList.add('active');
+  }
+
+  function startPayment(courseId){
+    // open pay modal
+    const course = state.courses.find(c=>c.id===courseId);
+    document.getElementById('payPanel').innerHTML = `
+      <div><strong>${course.title}</strong></div>
+      <div style="margin-top:8px">Select method:</div>
+      <div style="margin-top:8px">
+        <label><input type='radio' name='pay' value='card' checked> Card (Visa/Mastercard)</label><br>
+        <label><input type='radio' name='pay' value='vodafone'> Vodafone Cash</label><br>
+        <label><input type='radio' name='pay' value='fawry'> Fawry</label>
+      </div>
+    `;
+    document.getElementById('doPayBtn').onclick = ()=>doPayment(courseId);
+    document.getElementById('payModal').classList.add('active');
+  }
+
+  function doPayment(courseId){
+    // simulated success
+    const u = JSON.parse(localStorage.getItem('devcore_user'));
+    if(!u || !u.email){alert('You must log in to pay');openAuth('login');return}
+    u.paidCourses = u.paidCourses || [];
+    if(!u.paidCourses.includes(courseId)) u.paidCourses.push(courseId);
+    localStorage.setItem('devcore_user',JSON.stringify(u));state.user=u;updateAuthUI();closeModal('payModal');alert('Payment successful (simulated). You are enrolled.');
+    renderCourseContent(courseId);
+  }
+
+  function renderCourseContent(courseId){
+    const course = state.courses.find(c=>c.id===courseId);
+    const u = JSON.parse(localStorage.getItem('devcore_user'));
+    const has = u && u.paidCourses && u.paidCourses.includes(courseId);
+    let html = `<h3>${course.title}</h3><p>${course.desc}</p><p class='small'>Price: ${course.price}</p>`;
+    if(!has){
+      html += `<p style='color:#ffa0a0'>You must pay to view videos.</p><div style='margin-top:8px'><button class='btn' onclick="startPayment('${courseId}')">Pay to unlock</button></div>`;
+    } else {
+      html += `<h4 style='color:var(--neon)'>Course Content</h4>`;
+      (course.videos||[]).forEach(v=>{html += `<div class='card' style='margin-top:8px;padding:8px'><a href='${v.url}' target='_blank' style='color:var(--neon)'>${v.title}</a></div>`});
     }
-    function hideAdminPanel(){
-      document.getElementById('admin-panel').classList.add('hidden');
-      document.getElementById('public-area').classList.remove('hidden');
-      scrollToSection('courses');
+    document.getElementById('coursePanelContent').innerHTML = html;document.getElementById('courseModal').classList.add('active');
+  }
+
+  // admin
+  function openAdmin(){
+    const u = state.user; if(!u||!u.isAdmin){alert('Admin only');return}
+    document.getElementById('adminModal').classList.add('active');
+  }
+  function adminAddCourse(){
+    const t=document.getElementById('admTitle').value.trim();
+    const d=document.getElementById('admDesc').value.trim();
+    const p=document.getElementById('admPrice').value.trim();
+    const vs=document.getElementById('admVideos').value.trim();
+    if(!t||!d){alert('Provide title and desc');return}
+    const id = t.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-'+Date.now();
+    const videos = vs? vs.split('\n').map(r=>{const [title,url]=r.split('|');return {title:title?.trim(),url:url?.trim()}}):[];
+    const course = {id,title:t,desc:d,price:p||'Free',videos};
+    state.courses.push(course);localStorage.setItem('devcore_courses',JSON.stringify(state.courses));renderCourses();closeModal('adminModal');alert('Course added');
+  }
+
+  // simple service view
+  function openService(svc){
+    const list = state.courses.filter(c=>c.service===svc);
+    if(!list.length) alert('No courses for this service yet');
+    else{
+      const html = list.map(c=>`<div style='margin-bottom:8px'><strong>${c.title}</strong><div class='small'>${c.desc}</div><div style='margin-top:6px'><button class='btn' onclick="openCourse('${c.id}')">Enroll Now</button></div></div>`).join('');
+      document.getElementById('coursePanelContent').innerHTML = `<h3>Service: ${svc}</h3>${html}`;
+      document.getElementById('courseModal').classList.add('active');
     }
+  }
 
-    // Tabs
-    function switchTab(e){
-      const tabEls = document.querySelectorAll('.tab');
-      tabEls.forEach(t=>t.classList.remove('active'));
-      e.currentTarget.classList.add('active');
-      const tab = e.currentTarget.getAttribute('data-tab');
-      document.querySelectorAll('.tab-pane').forEach(p=>p.classList.add('hidden'));
-      document.getElementById(tab).classList.remove('hidden');
+  // contact
+  function sendContact(){const n=document.getElementById('contactName').value;const e=document.getElementById('contactEmail').value;const m=document.getElementById('contactMsg').value;if(!n||!e||!m){alert('fill fields');return}alert('Message sent (demo)');document.getElementById('contactName').value='';document.getElementById('contactEmail').value='';document.getElementById('contactMsg').value='';}
+
+  // language
+  const langSelect = document.getElementById('langSwitch');langSelect.value = state.lang;langSelect.addEventListener('change',(e)=>{state.lang=e.target.value;localStorage.setItem('devcore_lang',state.lang);document.documentElement.dir = state.lang==='ar'?'rtl':'ltr';applyTranslations();});
+  function applyTranslations(){
+    if(state.lang==='ar'){
+      document.querySelector('.logo').textContent = 'ديف كور';
+      document.querySelector('[href="#services"]').textContent='الخدمات';
+      document.querySelector('[href="#courses"]').textContent='الدورات';
+      document.querySelector('[href="#contact"]').textContent='تواصل';
+      document.querySelector('h1').textContent='ديف كور — مجتمع المطورين';
+      document.querySelector('.lead').textContent='دروس Godot و Cyber Security و Web Frontend. دورات مدفوعة ومحتوى احترافي.';
+    } else {
+      document.querySelector('.logo').textContent = 'DevCore';
+      document.querySelector('[href="#services"]').textContent='Services';
+      document.querySelector('[href="#courses"]').textContent='Courses';
+      document.querySelector('[href="#contact"]').textContent='Contact';
+      document.querySelector('h1').textContent='DevCore — Professional dev community';
+      document.querySelector('.lead').textContent='Game Dev (Godot), Cyber Security, Web (Frontend) and more. Multi pages, paid courses, and a clean dark neon style.';
     }
+  }
+  applyTranslations();
 
-    // Admin: render counters & tables
-    function refreshAdminCounts(){
-      const users = JSON.parse(localStorage.getItem(LS_KEYS.users)||'[]');
-      const purchases = JSON.parse(localStorage.getItem(LS_KEYS.purchases)||'[]');
-      const contacts = JSON.parse(localStorage.getItem(LS_KEYS.contacts)||'[]');
-      const courses = JSON.parse(localStorage.getItem(LS_KEYS.courses)||'[]');
-      document.getElementById('count-users').innerText = users.length;
-      document.getElementById('count-purchases').innerText = purchases.length;
-      document.getElementById('count-messages').innerText = contacts.length;
-      document.getElementById('count-courses').innerText = courses.length;
-    }
+  // helpers
+  document.getElementById('joinNow').addEventListener('click',()=>openAuth('signup'));
+  document.getElementById('viewCourses').addEventListener('click',()=>document.getElementById('courses').scrollIntoView({behavior:'smooth'}));
 
-    function renderPurchases(){
-      const tbody = document.querySelector('#purchases-table tbody'); tbody.innerHTML='';
-      const purchases = JSON.parse(localStorage.getItem(LS_KEYS.purchases)||'[]');
-      purchases.forEach(p=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${p.status||'done'}</td><td>${p.amount||0}</td><td>${p.email}</td><td>${p.name}</td><td>${new Date(p.date).toLocaleString()}</td><td>${p.id||''}</td>`;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderContacts(){
-      const tbody = document.querySelector('#contacts-table tbody'); tbody.innerHTML='';
-      const items = JSON.parse(localStorage.getItem(LS_KEYS.contacts)||'[]');
-      items.forEach(i=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${escapeHtml(i.msg)}</td><td>${i.email}</td><td>${i.name}</td><td>${new Date(i.date).toLocaleString()}</td>`;
-        tbody.appendChild(tr);
-      })
-    }
-
-    function renderCourses(){
-      const tbody = document.querySelector('#courses-table tbody'); tbody.innerHTML='';
-      const items = JSON.parse(localStorage.getItem(LS_KEYS.courses)||'[]');
-      items.forEach((c,idx)=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td><button class='btn btn-ghost' onclick='deleteCourse(${idx})'>حذف</button></td><td>${escapeHtml(c.desc)}</td><td>${escapeHtml(c.title)}</td>`;
-        tbody.appendChild(tr);
-      })
-    }
-
-    function renderUsers(){
-      const tbody = document.querySelector('#users-table tbody'); tbody.innerHTML='';
-      const items = JSON.parse(localStorage.getItem(LS_KEYS.users)||'[]');
-      items.forEach(u=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${u.email}</td><td>${u.name}</td><td>${u.purchases||0}</td>`;
-        tbody.appendChild(tr);
-      })
-    }
-
-    function renderAllAdmin(){
-      refreshAdminCounts(); renderPurchases(); renderContacts(); renderCourses(); renderUsers();
-      document.getElementById('admin-email').innerText = ADMIN_EMAIL;
-      document.getElementById('admin-pay').innerText = ADMIN_PASSWORD;
-      document.getElementById('admin-sn').innerText = SERIAL_NUMBER;
-    }
-
-    // Courses management
-    function addCourse(){
-      const title = document.getElementById('course-title').value.trim();
-      const desc = document.getElementById('course-desc').value.trim();
-      if(!title) { alert('اكتب عنوان الكورس'); return; }
-      const arr = JSON.parse(localStorage.getItem(LS_KEYS.courses)||'[]');
-      arr.unshift({title,desc});
-      localStorage.setItem(LS_KEYS.courses,JSON.stringify(arr));
-      document.getElementById('course-title').value=''; document.getElementById('course-desc').value='';
-      renderCourses(); refreshAdminCounts();
-    }
-    function deleteCourse(idx){
-      const arr = JSON.parse(localStorage.getItem(LS_KEYS.courses)||'[]');
-      arr.splice(idx,1);
-      localStorage.setItem(LS_KEYS.courses,JSON.stringify(arr));
-      renderCourses(); refreshAdminCounts();
-    }
-
-    // Purchases (simulate)
-    function addDummyPurchase(){
-      const purchases = JSON.parse(localStorage.getItem(LS_KEYS.purchases)||'[]');
-      const id = 'pay_'+Date.now();
-      purchases.unshift({id,name:'Demo Buyer',email:'buyer@demo.local',amount:9.99,status:'done',date:new Date().toISOString()});
-      localStorage.setItem(LS_KEYS.purchases,JSON.stringify(purchases));
-      renderPurchases(); refreshAdminCounts();
-    }
-
-    // Export / Import
-    function exportData(){
-      const data = {
-        users: JSON.parse(localStorage.getItem(LS_KEYS.users)||'[]'),
-        contacts: JSON.parse(localStorage.getItem(LS_KEYS.contacts)||'[]'),
-        purchases: JSON.parse(localStorage.getItem(LS_KEYS.purchases)||'[]'),
-        courses: JSON.parse(localStorage.getItem(LS_KEYS.courses)||'[]')
-      };
-      const blob = new Blob([JSON.stringify(data, null, 2)],{type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href=url; a.download='devcore-data.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    }
-    function importDataPrompt(){
-      const txt = prompt('ألصق JSON هنا لاستيراد (سيستبدل البيانات المحلية)');
-      if(!txt) return;
-      try{
-        const obj = JSON.parse(txt);
-        if(obj.users) localStorage.setItem(LS_KEYS.users,JSON.stringify(obj.users));
-        if(obj.contacts) localStorage.setItem(LS_KEYS.contacts,JSON.stringify(obj.contacts));
-        if(obj.purchases) localStorage.setItem(LS_KEYS.purchases,JSON.stringify(obj.purchases));
-        if(obj.courses) localStorage.setItem(LS_KEYS.courses,JSON.stringify(obj.courses));
-        alert('تم الاستيراد'); renderAllAdmin();
-      }catch(err){ alert('JSON غير صحيح'); }
-    }
-
-    // Helpers
-    function escapeHtml(s){ if(!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-    // basic show/hide
-    function scrollToSection(id){ const el = document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
-
-    // initial render
-    document.addEventListener('DOMContentLoaded', ()=>{
-      renderAllAdmin();
-    });
-
-  </script>
-</body>
+  // expose some functions to global for inline handlers
+  window.openCourse=openCourse;window.startPayment=startPayment;window.doPayment=doPayment;window.renderCourseContent=renderCourseContent;window.openService=openService;window.openAdmin=openAdmin;window.openAuth=openAuth;window.closeModal=closeModal;window.adminAddCourse=adminAddCourse;window.openProfile=openProfile;window.logout=logout;
+</script></body>
 </html>
