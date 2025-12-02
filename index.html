@@ -1,435 +1,339 @@
-<!doctype html>
-
+<!-- HOME-PAGE -->
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DevCore — Community</title>
-  <style>
-    :root{
-      --bg:#000000;
-      --card:#0b0b0b;
-      --neon:#9b5cff; /* neon purple */
-      --muted:#bfc4d4;
-      --glass: rgba(255,255,255,0.03);
-      --radius:14px;
-      font-family: Inter, system-ui, Arial, sans-serif;
-    }
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#000 0%,#060006 100%);color:var(--muted)}
-    .container{max-width:1100px;margin:0 auto;padding:24px}/* NAV */
-.nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{background:linear-gradient(90deg,var(--neon),#6ee7b7);padding:8px 12px;border-radius:8px;color:#000;font-weight:800}
-.menu{display:flex;gap:12px;align-items:center}
-.menu a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:8px}
-.menu a:hover{background:rgba(155,92,255,0.10);color:#fff}
-.btn{background:var(--neon);color:#000;padding:8px 12px;border-radius:10px;border:none;cursor:pointer}
-.ghost{background:transparent;border:1px solid rgba(155,92,255,0.25);padding:8px 10px;border-radius:8px;color:var(--muted)}
-
-/* Hero */
-.hero{display:flex;gap:20px;align-items:center;padding:40px 0}
-.hero-left{flex:1}
-.hero-right{flex:1;text-align:center}
-.card{background:var(--card);padding:18px;border-radius:var(--radius);box-shadow:0 6px 20px rgba(155,92,255,0.06);border:1px solid rgba(155,92,255,0.06)}
-h1{color:white;margin:0 0 12px 0}
-p.lead{color:var(--muted);margin:0}
-
-/* Services grid */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:20px}
-.svc{padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(155,92,255,0.04),transparent);border:1px solid rgba(155,92,255,0.06)}
-.svc h3{margin:0 0 6px 0;color:white}
-.svc p{margin:0;color:var(--muted)}
-
-/* Courses list */
-.course-list{margin-top:20px}
-.course{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;margin-bottom:10px;background:var(--glass);border:1px solid rgba(155,92,255,0.04)}
-.course .meta{display:flex;gap:12px;align-items:center}
-.tag{padding:6px 8px;border-radius:8px;background:rgba(155,92,255,0.12);color:var(--neon);font-weight:700}
-
-/* Modal / panels */
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6)}
-.modal.active{display:flex}
-.modal .panel{width:90%;max-width:720px;background:#07070a;padding:18px;border-radius:12px}
-
-/* Forms */
-.form-row{display:flex;gap:8px}
-input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:#0d0d0e;color:var(--muted)}
-label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-.small{font-size:13px;color:#a6a6b3}
-
-/* Responsive */
-@media (max-width:900px){.hero{flex-direction:column}.menu{display:none}.mobile-menu-btn{display:block}}
-
-/* RTL support */
-html[dir=rtl] {direction:rtl}
-html[dir=rtl] .brand{flex-direction:row-reverse}
-html[dir=rtl] .menu a{padding-right:6px;padding-left:6px}
-
-/* admin badge */
-.badge{background:var(--neon);padding:6px 8px;border-radius:8px;color:#000;font-weight:700}
-
-footer{margin-top:40px;padding:20px 0;color:#888;text-align:center}
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="yusef mohey">
+    <link rel="stylesheet" href="/dev-core/forntemd/css/style.css">
+    <meta name="http-eqiv" content="3">
+    <script src="/dev-core/forntemd/js/main.js"></script>
+    <title>DEV-CORE</title>
 </head>
-<body>
-  <div class="container">
-    <nav class="nav">
-      <div class="brand">
-        <div class="logo">DevCore</div>
-        <div style="color:var(--muted)">Community</div>
-      </div><div class="menu" id="navMenu">
-    <a href="#home" data-link>Home</a>
-    <a href="#services" data-link>Services</a>
-    <a href="#courses" data-link>Courses</a>
-    <a href="#contact" data-link>Contact</a>
-  </div>
 
-  <div style="display:flex;gap:10px;align-items:center">
-    <select id="langSwitch" class="ghost small">
-      <option value="en">EN</option>
-      <option value="ar">AR</option>
-    </select>
-    <button class="ghost" id="btnLogin">Log In</button>
-    <button class="btn" id="btnSignUp">Sign Up</button>
-  </div>
-</nav>
+<body id="body">
+    <header id="header">
+        <h1>welcome to dev-core</h1>
+        <p> dev-core where low costs high quality </p>
+        <ul>
+            <li><a href='signup.html'>signup</a></li>
+            <li><a href='login.html'>login</a></li>
+            <li><a href='cources.html'>cources</a></li>
+            <li><a href='dashboard.html'>dashboard</a></li>
+            <li style="display: none;"><a href='admin_panel.html'>admin panel</a></li>
 
-<!-- HERO -->
-<section id="home" class="hero">
-  <div class="hero-left">
-    <h1>DevCore — Professional dev community</h1>
-    <p class="lead">Game Dev (Godot), Cyber Security, Web (Frontend) and more. Multi pages, paid courses, and a clean dark neon style.</p>
-    <div style="margin-top:16px">
-      <button class="btn" id="joinNow">Join Community</button>
-      <button class="ghost" id="viewCourses">View Courses</button>
+        </ul>
+
+        <center><a href="signup.html"> signup now </a></center>
+        <nav class="navbar">
+
+    </header>
+    <div id="cources_dispalay">
+        <h2> cources </h2>
+
+        <section id="cybersec">
+            <h3><b>cybersecurity</b></h3>
+            <ul>
+                <ol>learn cybersecurity from a-z for biggner</ol>
+                <ol>required : no any cources required fot ghis course</ol>
+                <ol>Price <small>500 L.E </small></ol>
+                <ol>learn cybersecurity from a-z for biggner</ol>
+                <ol>
+                    <a href="courses.html"></a>join us now </ol>
+            </ul>
+
+        </section>
+        <hr>
+        <section id=" backend ">
+            <h3><b>backend</b></h3>
+            <ul>
+                <ol>learn backend from a-z for biggner</ol>
+                <ol>required : no any cources required fot ghis course </ol>
+                <ol>Price <small> 600 L.E </small></ol>
+                <ol>learn backend from a-z for biggner</ol>
+                <ol>have a look on <a href="roadmap.html"> backend roadmap </a></ol>
+                <ol>
+                    <a href="courses.html">join us now</a> </ol>
+
+            </ul>
+
+        </section>
+        <hr>
+
+        <section id="frontend">
+            <h3><b>front-end</b></h3>
+            <ul>
+                <ol>learn front-end from a-z for biggner</ol>
+                <ol>required : no any cources required fot ghis course</ol>
+                <ol>Price <small> 400 L.E </small></ol>
+                <ol>learn front-end from a-z for biggner</ol>
+                <ol>have a look on <a href="roadmap.html"> front-end roadmap </a></ol>
+                <ol>
+                    <a href="courses.html">join us now</a> </ol>
+
+            </ul>
+
+        </section>
+        <hr>
+
+        <section id="ai">
+            <h3><b> AI </b></h3>
+            <ul>
+                <ol>learn AI from a-z for biggner</ol>
+                <ol>required : no any cources required fot ghis course</ol>
+                <ol>Price <small>500 L.E </small></ol>
+                <ol>learn AI from a-z for biggner</ol>
+                <ol>have a look on <a href="roadmap.html"> AI roadmap </a></ol>
+                <ol><a href="courses.html">join us now</a></ol>
+
+            </ul>
+
+        </section>
+        <hr>
+
+        <section id="desktop_app">
+            <h3><b>desktop app</b></h3>
+            <ul>
+                <ol>learn desktop app from a-z for biggner</ol>
+                <ol>required : no any cources required fot ghis course</ol>
+                <ol>Price <small>500 L.E </small></ol>
+                <ol>learn desktop app from a-z for biggner</ol>
+                <ol>have a look on <a href="roadmap.html"> desktop-app roadmap </a></ol>
+                <ol><a href="courses.html">join us now</a></ol>
+
+            </ul>
+
+        </section>
+        <hr>
+
+        <section id="mobile_apps">
+            <h3><b>mobile app</b></h3>
+            <ul>
+                <ol>learn mobile app from a-z for biggner</ol>
+                <ol>required : no any cources required fot ghis course</ol>
+                <ol>Price <small>500 L.E </small></ol>
+                <ol>learn mobile app from a-z for biggner</ol>
+                <ol>have a look on <a href="roadmap.html"> mobile app roadmap </a></ol>
+                <ol><a href="courses.html">join us now</a></ol>
+
+            </ul>
+
+        </section>
+        <hr>
+
     </div>
-  </div>
-  <div class="hero-right card">
-    <h3 style="color:var(--neon)">Featured</h3>
-    <p class="small">Top course: Godot — Build a 2D Platformer</p>
-    <div style="margin-top:12px">
-      <div class="tag">Game Dev — Godot</div>
-    </div>
-  </div>
-</section>
 
-<!-- SERVICES -->
-<section id="services">
-  <h2 style="color:white">Services</h2>
-  <div class="grid">
-    <div class="svc card">
-      <h3>Game Development (Godot)</h3>
-      <p>Godot engine tutorials, templates, and project reviews.</p>
-      <div style="margin-top:10px"><button class="btn" data-service="game" onclick="openService('game')">View</button></div>
-    </div>
-    <div class="svc card">
-      <h3>Cyber Security</h3>
-      <p>CTF practice, pentest labs, vulnerability writeups.</p>
-      <div style="margin-top:10px"><button class="btn" data-service="cyber" onclick="openService('cyber')">View</button></div>
-    </div>
-    <div class="svc card">
-      <h3>Web Development (Frontend)</h3>
-      <p>HTML/CSS/JS, React basics, and advanced frontend topics.</p>
-      <div style="margin-top:10px"><button class="btn" data-service="web" onclick="openService('web')">View</button></div>
-    </div>
-    <div class="svc card">
-      <h3>Mentorship & Code Review</h3>
-      <p>1-on-1 sessions, portfolio reviews, and collaboration.</p>
-      <div style="margin-top:10px"><button class="btn" data-service="ment" onclick="openService('ment')">View</button></div>
-    </div>
-  </div>
-</section>
+    <footer id="footer">
+        <ul>
+            <li><a target="_blank" href="mailto:devcore.communicate@gmail.com">email</a></li>
+            <li><a target="_blank" href="tel:+966359797419">telphone </a></li>
+            <li><a target="_blank" href="https://www.instagram.com/dev.core.egy">insta</a></li>
 
-<!-- COURSES -->
-<section id="courses">
-  <h2 style="color:white">Courses</h2>
-  <div class="course-list" id="courseList"></div>
-</section>
+        </ul>
+        <form id="sending_form_for_info" method="post" action="data.txt">
 
-<!-- CONTACT -->
-<section id="contact">
-  <h2 style="color:white">Contact</h2>
-  <div class="card" style="margin-top:12px">
-    <label>Name</label>
-    <input id="contactName">
-    <label>Email</label>
-    <input id="contactEmail">
-    <label>Message</label>
-    <textarea id="contactMsg"></textarea>
-    <div style="margin-top:8px"><button class="btn" onclick="sendContact()">Send</button></div>
-  </div>
-</section>
+            <label for="msg_name">name</label>
+            <input type="text" id="msg_name" name="msg_name" maxlength="20" />
+            <label for="msg_email">email</label>
+            <input type="email" id="msg_email" name="msg_email" maxlength="20" />
+            <label for="msg_text">context </label>
+            <input type="text" id="msg_text" name="msg_text" maxlength="20" />
 
-<footer>
-  DevCore © <span id="year"></span> — Powered by Seif Elden Ghalib 
-</footer>
-
-  </div>  <!-- Modals -->  <div class="modal" id="authModal">
-    <div class="panel card">
-      <h3 id="authTitle">Sign Up</h3>
-      <div id="authForms">
-        <label>Email</label>
-        <input id="authEmail">
-        <label>Password</label>
-        <input id="authPass" type="password">
-        <label>Display name</label>
-        <input id="authName">
-        <div style="margin-top:10px;display:flex;gap:8px">
-          <button class="btn" id="authSubmit">Create</button>
-          <button class="ghost" onclick="closeModal('authModal')">Cancel</button>
-        </div>
-        <p class="small" style="margin-top:10px">Tip: use <strong>admin@devcore.test</strong> to become admin locally.</p>
-      </div>
-    </div>
-  </div>  <div class="modal" id="courseModal">
-    <div class="panel card">
-      <div id="coursePanelContent"></div>
-      <div style="margin-top:10px;display:flex;gap:8px"><button class="ghost" onclick="closeModal('courseModal')">Close</button></div>
-    </div>
-  </div>  <div class="modal" id="payModal">
-    <div class="panel card">
-      <h3>Pay for Course</h3>
-      <div id="payPanel"></div>
-      <div style="margin-top:12px"><button class="btn" id="doPayBtn">Pay (Simulate)</button> <button class="ghost" onclick="closeModal('payModal')">Cancel</button></div>
-    </div>
-  </div>  <!-- Admin dashboard quick panel -->  <div class="modal" id="adminModal">
-    <div class="panel card">
-      <h3>Admin Dashboard</h3>
-      <label>Course title</label>
-      <input id="admTitle">
-      <label>Short description</label>
-      <input id="admDesc">
-      <label>Price</label>
-      <input id="admPrice">
-      <label>Videos (title|url , separate with \n)</label>
-      <textarea id="admVideos" placeholder="Playthrough|https://...\nLesson 2|https://..."></textarea>
-      <div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="adminAddCourse()">Add Course</button><button class="ghost" onclick="closeModal('adminModal')">Close</button></div>
-    </div>
-  </div><script>
-  /* ---------- Simple client-only implementation (localStorage) ---------- */
-  const DEFAULT_COURSES = [
-    {id:'godot-2d',title:'Godot — 2D Platformer',desc:'Build a complete 2D platformer with Godot.',price:'50.00',videos:[{title:'Intro',url:'https://example.com/vid1'},{title:'Player',url:'https://example.com/vid2'}],service:'game'},
-    {id:'cyber-101',title:'Intro to Cyber Security',desc:'Basics of web hacking and CTFs.',price:'30.00',videos:[{title:'Recon',url:'https://example.com/ctf1'}],service:'cyber'},
-    {id:'frontend-pro',title:'Frontend Essentials',desc:'HTML/CSS/JS and modern patterns.',price:'40.00',videos:[{title:'HTML',url:'https://example.com/html1'}],service:'web'}
-  ];
-
-  // init
-  if(!localStorage.getItem('devcore_courses')) localStorage.setItem('devcore_courses',JSON.stringify(DEFAULT_COURSES));
-  if(!localStorage.getItem('devcore_user')) localStorage.setItem('devcore_user','null');
-
-  const state = {
-    courses: JSON.parse(localStorage.getItem('devcore_courses')||'[]'),
-    user: JSON.parse(localStorage.getItem('devcore_user')),
-    lang: localStorage.getItem('devcore_lang') || 'en'
-  };
-
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // Render courses
-  function renderCourses(){
-    const el = document.getElementById('courseList');el.innerHTML='';
-    state.courses.forEach(c=>{
-      const div = document.createElement('div');div.className='course';
-      div.innerHTML = `
-        <div class="meta">
-          <div>
-            <div style="font-weight:700;color:white">${c.title}</div>
-            <div class="small">${c.desc}</div>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <div class="tag">${c.price}</div>
-          <button class="btn" onclick="openCourse('${c.id}')">Enroll Now</button>
-        </div>`;
-      el.appendChild(div);
-    });
-  }
-  renderCourses();
-
-  // Nav links
-  document.querySelectorAll('[data-link]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1);document.getElementById(id).scrollIntoView({behavior:'smooth'});}));
-
-  // Auth modal
-  document.getElementById('btnSignUp').addEventListener('click',()=>openAuth('signup'));
-  document.getElementById('btnLogin').addEventListener('click',()=>openAuth('login'));
-
-  function openAuth(mode){
-    document.getElementById('authModal').classList.add('active');
-    document.getElementById('authTitle').textContent = mode==='signup'? 'Sign Up' : 'Log In';
-    document.getElementById('authSubmit').textContent = mode==='signup'? 'Create' : 'Log In';
-    document.getElementById('authSubmit').onclick = ()=>mode==='signup'? doSignUp():doLogin();
-  }
-  function closeModal(id){document.getElementById(id).classList.remove('active');}
-
-  function doSignUp(){
-    const email = document.getElementById('authEmail').value.trim();
-    const pass = document.getElementById('authPass').value;
-    const name = document.getElementById('authName').value||email.split('@')[0];
-    if(!email||!pass){alert('Provide email and password');return}
-    const user = {email,name,paidCourses:[]};
-    if(email==='admin@devcore.test') user.isAdmin = true;
-    localStorage.setItem('devcore_user',JSON.stringify(user));state.user=user;updateAuthUI();closeModal('authModal');
-    alert('Account created (local demo).');
-  }
-  function doLogin(){
-    const email = document.getElementById('authEmail').value.trim();
-    const pass = document.getElementById('authPass').value;
-    // demo: accept any email/password
-    if(!email||!pass){alert('Provide email and password');return}
-    // load previous user if same email
-    const saved = JSON.parse(localStorage.getItem('devcore_user'));
-    let user = saved && saved.email===email? saved : {email,name:email.split('@')[0],paidCourses:[]};
-    if(email==='admin@devcore.test') user.isAdmin = true;
-    localStorage.setItem('devcore_user',JSON.stringify(user));state.user=user;updateAuthUI();closeModal('authModal');
-    alert('Logged in (local demo).');
-  }
-
-  function updateAuthUI(){
-    const u = JSON.parse(localStorage.getItem('devcore_user'));
-    state.user = u;
-    if(u && u.email){
-      document.getElementById('btnLogin').textContent = u.email;
-      document.getElementById('btnSignUp').textContent = 'Profile';
-      document.getElementById('btnSignUp').onclick = ()=>openProfile();
-      document.getElementById('btnLogin').onclick = ()=>{
-        if(u.isAdmin) openAdmin(); else openProfile();
-      }
-    } else {
-      document.getElementById('btnLogin').textContent = 'Log In';
-      document.getElementById('btnSignUp').textContent = 'Sign Up';
-      document.getElementById('btnSignUp').onclick = ()=>openAuth('signup');
-      document.getElementById('btnLogin').onclick = ()=>openAuth('login');
+            <button type="submit">send</button>
+        </form>
+    </footer>
+</body>
+<style>
+    /* ===== GLOBAL STYLE ===== */
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
     }
-  }
-  updateAuthUI();
-
-  function openProfile(){
-    const u = state.user; if(!u){openAuth('login');return}
-    const content = `
-      <h3>Profile</h3>
-      <p><strong>Email:</strong> ${u.email}</p>
-      <p><strong>Name:</strong> ${u.name}</p>
-      <p><strong>Paid courses:</strong> ${(u.paidCourses||[]).join(', ') || 'None'}</p>
-      <div style="margin-top:10px"><button class='btn' onclick="logout()">Log Out</button></div>
-    `;
-    document.getElementById('coursePanelContent').innerHTML = content;document.getElementById('courseModal').classList.add('active');
-  }
-  function logout(){localStorage.setItem('devcore_user','null');state.user=null;updateAuthUI();closeModal('courseModal');alert('Logged out');}
-
-  // Courses
-  function openCourse(id){
-    const course = state.courses.find(c=>c.id===id);
-    if(!course){alert('Course not found');return}
-    const content = `
-      <h3 style="color:var(--neon)">${course.title}</h3>
-      <p>${course.desc}</p>
-      <p class="small">Price: ${course.price}</p>
-      <div style="margin-top:12px">
-        <button class='btn' onclick="startPayment('${id}')">${'Pay & Enroll'}</button>
-        <button class='ghost' onclick="renderCourseContent('${id}')">Open Course Page</button>
-      </div>
-    `;
-    document.getElementById('coursePanelContent').innerHTML = content;document.getElementById('courseModal').classList.add('active');
-  }
-
-  function startPayment(courseId){
-    // open pay modal
-    const course = state.courses.find(c=>c.id===courseId);
-    document.getElementById('payPanel').innerHTML = `
-      <div><strong>${course.title}</strong></div>
-      <div style="margin-top:8px">Select method:</div>
-      <div style="margin-top:8px">
-        <label><input type='radio' name='pay' value='card' checked> Card (Visa/Mastercard)</label><br>
-        <label><input type='radio' name='pay' value='vodafone'> Vodafone Cash</label><br>
-        <label><input type='radio' name='pay' value='fawry'> Fawry</label>
-      </div>
-    `;
-    document.getElementById('doPayBtn').onclick = ()=>doPayment(courseId);
-    document.getElementById('payModal').classList.add('active');
-  }
-
-  function doPayment(courseId){
-    // simulated success
-    const u = JSON.parse(localStorage.getItem('devcore_user'));
-    if(!u || !u.email){alert('You must log in to pay');openAuth('login');return}
-    u.paidCourses = u.paidCourses || [];
-    if(!u.paidCourses.includes(courseId)) u.paidCourses.push(courseId);
-    localStorage.setItem('devcore_user',JSON.stringify(u));state.user=u;updateAuthUI();closeModal('payModal');alert('Payment successful (simulated). You are enrolled.');
-    renderCourseContent(courseId);
-  }
-
-  function renderCourseContent(courseId){
-    const course = state.courses.find(c=>c.id===courseId);
-    const u = JSON.parse(localStorage.getItem('devcore_user'));
-    const has = u && u.paidCourses && u.paidCourses.includes(courseId);
-    let html = `<h3>${course.title}</h3><p>${course.desc}</p><p class='small'>Price: ${course.price}</p>`;
-    if(!has){
-      html += `<p style='color:#ffa0a0'>You must pay to view videos.</p><div style='margin-top:8px'><button class='btn' onclick="startPayment('${courseId}')">Pay to unlock</button></div>`;
-    } else {
-      html += `<h4 style='color:var(--neon)'>Course Content</h4>`;
-      (course.videos||[]).forEach(v=>{html += `<div class='card' style='margin-top:8px;padding:8px'><a href='${v.url}' target='_blank' style='color:var(--neon)'>${v.title}</a></div>`});
+    
+    body {
+        background: #0d0d0d;
+        color: #fff;
+        line-height: 1.6;
     }
-    document.getElementById('coursePanelContent').innerHTML = html;document.getElementById('courseModal').classList.add('active');
-  }
-
-  // admin
-  function openAdmin(){
-    const u = state.user; if(!u||!u.isAdmin){alert('Admin only');return}
-    document.getElementById('adminModal').classList.add('active');
-  }
-  function adminAddCourse(){
-    const t=document.getElementById('admTitle').value.trim();
-    const d=document.getElementById('admDesc').value.trim();
-    const p=document.getElementById('admPrice').value.trim();
-    const vs=document.getElementById('admVideos').value.trim();
-    if(!t||!d){alert('Provide title and desc');return}
-    const id = t.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-'+Date.now();
-    const videos = vs? vs.split('\n').map(r=>{const [title,url]=r.split('|');return {title:title?.trim(),url:url?.trim()}}):[];
-    const course = {id,title:t,desc:d,price:p||'Free',videos};
-    state.courses.push(course);localStorage.setItem('devcore_courses',JSON.stringify(state.courses));renderCourses();closeModal('adminModal');alert('Course added');
-  }
-
-  // simple service view
-  function openService(svc){
-    const list = state.courses.filter(c=>c.service===svc);
-    if(!list.length) alert('No courses for this service yet');
-    else{
-      const html = list.map(c=>`<div style='margin-bottom:8px'><strong>${c.title}</strong><div class='small'>${c.desc}</div><div style='margin-top:6px'><button class='btn' onclick="openCourse('${c.id}')">Enroll Now</button></div></div>`).join('');
-      document.getElementById('coursePanelContent').innerHTML = `<h3>Service: ${svc}</h3>${html}`;
-      document.getElementById('courseModal').classList.add('active');
+    /* ===== HEADER ===== */
+    
+    header {
+        background: linear-gradient(135deg, #6a25ff, #3c0a99);
+        padding: 40px 20px;
+        text-align: center;
+        border-bottom: 2px solid #8f44ff;
     }
-  }
-
-  // contact
-  function sendContact(){const n=document.getElementById('contactName').value;const e=document.getElementById('contactEmail').value;const m=document.getElementById('contactMsg').value;if(!n||!e||!m){alert('fill fields');return}alert('Message sent (demo)');document.getElementById('contactName').value='';document.getElementById('contactEmail').value='';document.getElementById('contactMsg').value='';}
-
-  // language
-  const langSelect = document.getElementById('langSwitch');langSelect.value = state.lang;langSelect.addEventListener('change',(e)=>{state.lang=e.target.value;localStorage.setItem('devcore_lang',state.lang);document.documentElement.dir = state.lang==='ar'?'rtl':'ltr';applyTranslations();});
-  function applyTranslations(){
-    if(state.lang==='ar'){
-      document.querySelector('.logo').textContent = 'ديف كور';
-      document.querySelector('[href="#services"]').textContent='الخدمات';
-      document.querySelector('[href="#courses"]').textContent='الدورات';
-      document.querySelector('[href="#contact"]').textContent='تواصل';
-      document.querySelector('h1').textContent='ديف كور — مجتمع المطورين';
-      document.querySelector('.lead').textContent='دروس Godot و Cyber Security و Web Frontend. دورات مدفوعة ومحتوى احترافي.';
-    } else {
-      document.querySelector('.logo').textContent = 'DevCore';
-      document.querySelector('[href="#services"]').textContent='Services';
-      document.querySelector('[href="#courses"]').textContent='Courses';
-      document.querySelector('[href="#contact"]').textContent='Contact';
-      document.querySelector('h1').textContent='DevCore — Professional dev community';
-      document.querySelector('.lead').textContent='Game Dev (Godot), Cyber Security, Web (Frontend) and more. Multi pages, paid courses, and a clean dark neon style.';
+    
+    header h1 {
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
     }
-  }
-  applyTranslations();
+    
+    header p {
+        opacity: 0.8;
+        margin-top: 5px;
+    }
+    /* ===== NAV ===== */
+    
+    header ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 20px;
+    }
+    
+    header ul li a {
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: 0.3s ease;
+        font-weight: bold;
+    }
+    
+    header ul li a:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+    /* Signup button */
+    
+    header center a {
+        display: inline-block;
+        margin-top: 15px;
+        background: #8f44ff;
+        padding: 10px 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: white;
+        transition: 0.3s ease;
+    }
+    
+    header center a:hover {
+        background: #6a25ff;
+    }
+    /* ===== COURSES SECTION ===== */
+    
+    #cources_dispalay {
+        padding: 40px 20px;
+        width: 90%;
+        margin: auto;
+    }
+    
+    #cources_dispalay h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        letter-spacing: 2px;
+    }
+    
+    section {
+        background: #111;
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 25px;
+        border: 1px solid #333;
+        transition: 0.3s ease;
+    }
+    
+    section:hover {
+        transform: translateY(-5px);
+        border-color: #8f44ff;
+    }
+    
+    section h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #b788ff;
+    }
+    
+    section ul {
+        list-style: none;
+        line-height: 2;
+    }
+    
+    section ul ol {
+        font-size: 1rem;
+        opacity: 0.85;
+    }
+    
+    section ul a {
+        color: #8f44ff;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    
+    section ul a:hover {
+        text-decoration: underline;
+    }
+    /* ===== FOOTER ===== */
+    
+    footer {
+        background: #0b0b0b;
+        padding: 30px 20px;
+        margin-top: 50px;
+    }
+    
+    footer ul {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    footer ul li a {
+        color: #8f44ff;
+        font-weight: bold;
+        text-decoration: none;
+        transition: 0.3s ease;
+    }
+    
+    footer ul li a:hover {
+        text-decoration: underline;
+    }
+    /* ===== FORM IN FOOTER ===== */
+    
+    #sending_form_for_info {
+        width: 90%;
+        max-width: 400px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #sending_form_for_info label {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    
+    #sending_form_for_info input {
+        padding: 10px;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 10px;
+        color: white;
+    }
+    
+    #sending_form_for_info button {
+        padding: 12px;
+        background: #8f44ff;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+    
+    #sending_form_for_info button:hover {
+        background: #6a25ff;
+    }
+</style>
 
-  // helpers
-  document.getElementById('joinNow').addEventListener('click',()=>openAuth('signup'));
-  document.getElementById('viewCourses').addEventListener('click',()=>document.getElementById('courses').scrollIntoView({behavior:'smooth'}));
-
-  // expose some functions to global for inline handlers
-  window.openCourse=openCourse;window.startPayment=startPayment;window.doPayment=doPayment;window.renderCourseContent=renderCourseContent;window.openService=openService;window.openAdmin=openAdmin;window.openAuth=openAuth;window.closeModal=closeModal;window.adminAddCourse=adminAddCourse;window.openProfile=openProfile;window.logout=logout;
-</script></body>
 </html>
