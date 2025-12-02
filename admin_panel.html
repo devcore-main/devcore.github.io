@@ -145,63 +145,27 @@
             <section class="admin-section">
                 <div class="section-header">
                     <h2>Course Management</h2>
-                    <button class="btn-add">+ Add Course</button>
+                    <button class="btn-add" onclick="showAddCourseModal()">+ Add Course</button>
                 </div>
-                <div class="course-admin-list">
-                    <div class="course-admin-item">
-                        <div class="course-admin-info">
-                            <h3>Front-End Development</h3>
-                            <p>Enrollments: 234 | Price: 400 L.E</p>
-                            <div class="course-tags">
-                                <span class="tag">Active</span>
-                                <span class="tag">Popular</span>
-                            </div>
-                        </div>
-                        <div class="course-admin-actions">
-                            <button class="btn-small">Edit</button>
-                            <button class="btn-small danger">Delete</button>
-                        </div>
-                    </div>
-                    <div class="course-admin-item">
-                        <div class="course-admin-info">
-                            <h3>Backend Development</h3>
-                            <p>Enrollments: 189 | Price: 600 L.E</p>
-                            <div class="course-tags">
-                                <span class="tag">Active</span>
-                            </div>
-                        </div>
-                        <div class="course-admin-actions">
-                            <button class="btn-small">Edit</button>
-                            <button class="btn-small danger">Delete</button>
-                        </div>
-                    </div>
-                    <div class="course-admin-item">
-                        <div class="course-admin-info">
-                            <h3>Cybersecurity</h3>
-                            <p>Enrollments: 156 | Price: 500 L.E</p>
-                            <div class="course-tags">
-                                <span class="tag">Active</span>
-                                <span class="tag">Featured</span>
-                            </div>
-                        </div>
-                        <div class="course-admin-actions">
-                            <button class="btn-small">Edit</button>
-                            <button class="btn-small danger">Delete</button>
-                        </div>
-                    </div>
-                    <div class="course-admin-item">
-                        <div class="course-admin-info">
-                            <h3>AI Development</h3>
-                            <p>Enrollments: 98 | Price: 500 L.E</p>
-                            <div class="course-tags">
-                                <span class="tag">Active</span>
-                            </div>
-                        </div>
-                        <div class="course-admin-actions">
-                            <button class="btn-small">Edit</button>
-                            <button class="btn-small danger">Delete</button>
-                        </div>
-                    </div>
+                <div class="course-admin-list" id="coursesList">
+                    <!-- Courses will be loaded dynamically -->
+                    <div class="loading">Loading courses...</div>
+                </div>
+            </section>
+
+            <!-- Course Materials Management Section -->
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2>Course Materials Management</h2>
+                </div>
+                <div class="materials-controls">
+                    <select id="materialsCourseSelect" class="materials-course-select">
+                        <option value="">Select a course...</option>
+                    </select>
+                    <button class="btn-add" onclick="showAddMaterialModal()" id="addMaterialBtn" disabled>+ Add Material</button>
+                </div>
+                <div class="materials-list-container" id="materialsList">
+                    <p style="text-align: center; opacity: 0.7; padding: 40px;">Select a course to manage its materials</p>
                 </div>
             </section>
 
@@ -358,6 +322,70 @@
             <li><a target="_blank" href="https://www.instagram.com/dev.core.egy">insta</a></li>
         </ul>
     </footer>
+
+    <!-- Add Course Modal -->
+    <div id="addCourseModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <span class="close-admin-modal" onclick="closeAddCourseModal()">&times;</span>
+            <h2>Add New Course</h2>
+            <form id="addCourseForm">
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="courseTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="courseDescription" rows="4"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Price (L.E) *</label>
+                        <input type="number" id="coursePrice" required min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="courseCategory">
+                            <option value="Web Development">Web Development</option>
+                            <option value="Security">Security</option>
+                            <option value="Artificial Intelligence">Artificial Intelligence</option>
+                            <option value="Desktop">Desktop</option>
+                            <option value="Mobile">Mobile</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Create Course</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Material Modal -->
+    <div id="addMaterialModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <span class="close-admin-modal" onclick="closeAddMaterialModal()">&times;</span>
+            <h2>Add Course Material</h2>
+            <form id="addMaterialForm">
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="materialTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea id="materialContent" rows="6" placeholder="Enter material content, notes, or description..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Material Type</label>
+                    <select id="materialType">
+                        <option value="lesson">Lesson</option>
+                        <option value="video">Video</option>
+                        <option value="assignment">Assignment</option>
+                        <option value="quiz">Quiz</option>
+                        <option value="resource">Resource</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">Add Material</button>
+            </form>
+        </div>
+    </div>
 
     <script src="/dev-core/forntemd/js/auth.js"></script>
     <script src="/dev-core/forntemd/js/admin.js"></script>
@@ -952,6 +980,162 @@
         footer ul li a:hover {
             text-decoration: underline;
         }
+        /* ===== MATERIALS MANAGEMENT ===== */
+        
+        .materials-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .materials-course-select {
+            flex: 1;
+            padding: 10px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        .materials-course-select:focus {
+            outline: none;
+            border-color: #8f44ff;
+        }
+        
+        .materials-list-container {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 200px;
+        }
+        
+        .material-admin-item {
+            background: #0d0d0d;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .material-admin-info h4 {
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        
+        .material-admin-info p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .material-content-preview {
+            opacity: 0.6;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+        /* ===== ADMIN MODAL ===== */
+        
+        .admin-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            overflow: auto;
+        }
+        
+        .admin-modal-content {
+            background: #111;
+            margin: 5% auto;
+            padding: 40px;
+            border: 1px solid #333;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+        }
+        
+        .admin-modal-content h2 {
+            color: #b788ff;
+            margin-bottom: 25px;
+        }
+        
+        .close-admin-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        
+        .close-admin-modal:hover {
+            color: #8f44ff;
+        }
+        
+        .admin-modal-content .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .admin-modal-content .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #fff;
+        }
+        
+        .admin-modal-content .form-group input,
+        .admin-modal-content .form-group textarea,
+        .admin-modal-content .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .admin-modal-content .form-group input:focus,
+        .admin-modal-content .form-group textarea:focus,
+        .admin-modal-content .form-group select:focus {
+            outline: none;
+            border-color: #8f44ff;
+        }
+        
+        .admin-modal-content .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .admin-modal-content .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: #8f44ff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .admin-modal-content .btn-submit:hover {
+            background: #6a25ff;
+        }
         /* ===== RESPONSIVE ===== */
         
         @media (max-width: 768px) {
@@ -974,6 +1158,12 @@
             }
             header h1 {
                 font-size: 1.8rem;
+            }
+            .materials-controls {
+                flex-direction: column;
+            }
+            .admin-modal-content .form-row {
+                grid-template-columns: 1fr;
             }
         }
     </style>
