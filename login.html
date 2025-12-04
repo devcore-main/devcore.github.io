@@ -181,8 +181,14 @@
                     <input type="checkbox" id="remember" name="remember">
                     <label for="remember">Remember me</label>
                 </div>
-      <a href="Forget_password.html" class="forgot-password">Forgot Password?</a>
+                <a href="Forget_password.html" class="forgot-password">Forgot Password?</a>
             </div>
+              <!-- ===== reCAPTCHA ===== -->
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="6Le8lCEsAAAAAI5850_b5FxuUbK-ibplWX3cVN3I"></div>
+                <span class="error-message" id="recaptchaError"></span>
+            </div>
+
 
             <button type="submit" class="btn-submit" id="submitBtn">
                 <span class="btn-text">Login</span>
@@ -207,6 +213,9 @@
 </footer>
 
 <script src="/dev-core/forntemd/js/auth.js"></script>
+!-- Google reCAPTCHA -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <script>
 
     // ===== AJAX LOGIN =====
