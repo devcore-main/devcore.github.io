@@ -10,16 +10,35 @@
 </head>
 
 <body>
-    <header id="header">
-        <h1>Welcome to Your Dashboard</h1>
-        <p>Track your progress and manage your courses</p>
-        <ul>
-            <li><a href='inedx.html'>Home</a></li>
-            <li><a href='courses.html'>Courses</a></li>
-            <li><a href='dashboard.html'>Dashboard</a></li>
-            <li><a href='roadmap.html'>Roadmap</a></li>
-        </ul>
-    </header>
+  <header>
+    <div class="header-content">
+        <h1>DevCore Dashboard</h1>
+        <p>Track your progress & manage your courses</p>
+    </div>
+    
+    <!-- القائمة الأصلية للديسكتوب -->
+    <nav class="desktop-nav">
+        <a href="index.html">Home</a>
+        <a href="#">Dashboard</a>
+        <a href="courses.html">Courses</a>
+        <a href="roadmap.html">Roadmap</a>
+    </nav>
+    
+    <!-- زر القائمة للموبايل فقط -->
+    <div class="menu-toggle" id="menuToggle">☰</div>
+</header>
+
+<!-- ✅ SLIDE MENU للموبايل فقط -->
+<nav class="slide-menu" id="slideMenu">
+    <div class="close-btn" id="closeMenu">✕</div>
+    
+  <a href="index.html">Home</a>
+  <a href="#">Dashboard</a>
+  <a href="courses.html">Courses</a>
+  <a href="roadmap.html">Roadmap</a>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay"></div>
 
     <div class="dashboard-container">
         <!-- User Stats Section -->
@@ -62,7 +81,7 @@
                 <div class="course-list">
                     <div class="course-item">
                         <div class="course-header">
-                            <h3>you must login fitsr </h3>
+                            <h3>you must login first </h3>
                             <span class="course-status in-progress">In Progress</span>
                         </div>
                         <div class="progress-bar">
@@ -197,9 +216,9 @@
 
     <footer id="footer">
         <ul>
-            <li><a target="_blank" href="mailto:devcore.communicate@gmail.com">email</a></li>
-            <li><a target="_blank" href="tel:+966359797419">telphone</a></li>
-            <li><a target="_blank" href="https://www.instagram.com/dev.core.egy">insta</a></li>
+            <li><a target="_blank" href="mailto:devcore.communicate@gmail.com">Email</a></li>
+            <li><a target="_blank" href="tel:+966359797419">Telephone</a></li>
+            <li><a target="_blank" href="https://www.instagram.com/dev.core.egy">Instagram</a></li>
         </ul>
     </footer>
 
@@ -221,46 +240,81 @@
             color: #fff;
             line-height: 1.6;
         }
+        
         /* ===== HEADER ===== */
         
         header {
             background: linear-gradient(135deg, #6a25ff, #3c0a99);
-            padding: 40px 20px;
-            text-align: center;
+            padding: 20px 30px;
             border-bottom: 2px solid #8f44ff;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 90px;
+        }
+        
+        .header-content {
+            flex: 1;
         }
         
         header h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
         }
         
         header p {
             opacity: 0.8;
-            margin-top: 5px;
+            font-size: 0.9rem;
         }
         
-        header ul {
-            list-style: none;
+        /* ===== DESKTOP NAVIGATION ===== */
+        
+        .desktop-nav {
             display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            gap: 20px;
+            gap: 25px;
+            align-items: center;
         }
         
-        header ul li a {
+        .desktop-nav a {
             color: #fff;
-            padding: 8px 15px;
-            border-radius: 8px;
             text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
             transition: 0.3s ease;
-            font-weight: bold;
         }
         
-        header ul li a:hover {
+        .desktop-nav a:hover {
             background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
         }
+        
+        /* ===== MENU TOGGLE للموبايل فقط ===== */
+        
+        .menu-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.2rem;
+            cursor: pointer;
+            color: #fff;
+            background: none;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            transition: 0.3s ease;
+            display: none; /* مخفي على الديسكتوب */
+            z-index: 1000;
+        }
+        
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
         /* ===== DASHBOARD CONTAINER ===== */
         
         .dashboard-container {
@@ -268,6 +322,7 @@
             margin: 40px auto;
             padding: 0 20px;
         }
+        
         /* ===== STATS SECTION ===== */
         
         .stats-section {
@@ -310,6 +365,7 @@
             font-weight: bold;
             color: #b788ff;
         }
+        
         /* ===== DASHBOARD GRID ===== */
         
         .dashboard-grid {
@@ -332,6 +388,7 @@
             border-bottom: 2px solid #333;
             padding-bottom: 10px;
         }
+        
         /* ===== COURSE LIST ===== */
         
         .course-list {
@@ -438,6 +495,7 @@
             background: #8f44ff;
             color: #fff;
         }
+        
         /* ===== ACTIVITY LIST ===== */
         
         .activity-list {
@@ -472,6 +530,7 @@
             font-size: 0.8rem;
             opacity: 0.6;
         }
+        
         /* ===== QUICK ACTIONS ===== */
         
         .quick-actions {
@@ -512,6 +571,7 @@
             font-size: 0.85rem;
             opacity: 0.7;
         }
+        
         /* ===== DEADLINE LIST ===== */
         
         .deadline-list {
@@ -559,6 +619,7 @@
             font-size: 0.9rem;
             opacity: 0.7;
         }
+        
         /* ===== FOOTER ===== */
         
         footer {
@@ -584,23 +645,206 @@
         footer ul li a:hover {
             text-decoration: underline;
         }
+        
+        /* ===== SLIDE MENU للموبايل فقط ===== */
+        
+        .slide-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a0033, #0d001a);
+            display: flex;
+            flex-direction: column;
+            padding: 80px 20px;
+            gap: 20px;
+            transition: right 0.35s ease-in-out;
+            z-index: 9998;
+        }
+        
+        .slide-menu.active {
+            right: 0;
+        }
+        
+        .slide-menu a {
+            color: #fff;
+            font-size: 1.1rem;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        
+        .slide-menu.active a {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-menu a:hover {
+            background: #8f44ff;
+        }
+        
+        .slide-menu a:nth-child(2) { transition-delay: 0.05s; }
+        .slide-menu a:nth-child(3) { transition-delay: 0.1s; }
+        .slide-menu a:nth-child(4) { transition-delay: 0.15s; }
+        .slide-menu a:nth-child(5) { transition-delay: 0.2s; }
+        .slide-menu a:nth-child(6) { transition-delay: 0.25s; }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #fff;
+        }
+        
+        /* ===== BLUR BACKGROUND للموبايل فقط ===== */
+        
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s ease;
+            z-index: 9997;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
         /* ===== RESPONSIVE ===== */
         
         @media (max-width: 768px) {
+            .desktop-nav {
+                display: none !important; /* إخفاء قائمة الديسكتوب */
+            }
+            
+            .menu-toggle {
+                display: block; /* إظهار زر القائمة */
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+            
+            .header-content {
+                margin-bottom: 15px;
+                width: 100%;
+            }
+            
+            header h1 {
+                font-size: 1.6rem;
+                text-align: left;
+            }
+            
+            header p {
+                text-align: left;
+                font-size: 0.85rem;
+            }
+            
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
+            
             .stats-section {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
             .quick-actions {
                 grid-template-columns: 1fr;
             }
+            
+            .course-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .course-actions {
+                flex-direction: column;
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+            
             header h1 {
-                font-size: 1.8rem;
+                font-size: 1.4rem;
+            }
+            
+            .menu-toggle {
+                font-size: 2rem;
+                right: 15px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .stat-icon,
+            .action-icon {
+                font-size: 2rem;
+            }
+            
+            .stat-number {
+                font-size: 1.7rem;
+            }
+            
+            .slide-menu {
+                width: 240px;
             }
         }
     </style>
+    
+    <!--Menu Toggle-->
+    <script>
+        const menuToggle = document.getElementById("menuToggle");
+        const slideMenu = document.getElementById("slideMenu");
+        const closeMenu = document.getElementById("closeMenu");
+        const menuOverlay = document.getElementById("menuOverlay");
+        
+        function openMenu() {
+            slideMenu.classList.add("active");
+            menuOverlay.classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
+        
+        function closeMenuFunc() {
+            slideMenu.classList.remove("active");
+            menuOverlay.classList.remove("active");
+            document.body.style.overflow = "auto";
+        }
+        
+        menuToggle.onclick = openMenu;
+        closeMenu.onclick = closeMenuFunc;
+        menuOverlay.onclick = closeMenuFunc;
+        
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeMenuFunc();
+            }
+        });
+    </script>
 </body>
-
 </html>
