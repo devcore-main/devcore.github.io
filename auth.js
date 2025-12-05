@@ -1,49 +1,360 @@
-// Authentication and Validation JavaScript
+// Enhanced Local Storage Management for User and Admin Data
 
 // Admin credentials
 const ADMIN_EMAIL = 'devcore.communicate@gmail.com';
 const ADMIN_PASSWORD = 'dev_core_25.6.2025';
 
-// API Base URL - Auto-detect environment
-const API_BASE_URL = (() => {
-    // Check if we're in production (Render)
-    if (window.location.protocol === 'https:' || window.location.hostname !== 'localhost') {
-        // Use Render backend URL (update this with your Render URL)
-        const renderUrl = window.location.origin.replace(/\/$/, '');
-        return `${renderUrl}/api`;
-    }
-    // Local development
-    return 'http://localhost:5000/api';
-})();
+// Storage Keys
+const STORAGE_KEYS = {
+    AUTH_TOKEN: 'authToken',
+    USER_DATA: 'user',
+    USERS_LIST: 'registeredUsers',
+    ADMIN_DATA: 'admin',
+    REMEMBER_ME: 'rememberMe',
+    SESSION_EXPIRY: 'sessionExpiry',
+    LOGS: 'authLogs'
+};
 
-// Utility Functions
-const utils = {
-    // Check if user is logged in
-    isLoggedIn: () => {
-        return localStorage.getItem('authToken') !== null;
+// Enhanced Storage Management
+const storageManager = {
+    // User Data Management
+    saveUser: (userData) => {
+        try {
+            // Save current user session
+            localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
+            
+            // Save to users list if not admin
+            if (userData.email !== ADMIN_EMAIL) {
+                const users = storageManager.getAllUsers();
+                const existingUserIndex = users.findIndex(u => u.email === userData.email);
+                
+                if (existingUserIndex !== -1) {
+                    // Update existing user
+                    users[existingUserIndex] = {
+                        ...users[existingUserIndex],
+                        ...userData,
+                        lastLogin: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
+                } else {
+                    // Add new user
+                    const newUser = {
+                        ...userData,
+                        id: Date.now().toString(),
+                        createdAt: new Date().toISOString(),
+                        lastLogin: new Date().toISOString(),
+                        isActive: true
+                    };
+                    users.push(newUser);
+                }
+                
+                localStorage.setItem(STORAGE_KEYS.USERS_LIST, JSON.stringify(users));
+            }
+            
+            return true;
+        } catch (error) {
+            console.error('Error saving user data:', error);
+            return false;
+        }
     },
 
-    // Get current user
+    // Admin Data Management
+    saveAdmin: (adminData) => {
+        try {
+            const adminInfo = {
+                ...adminData,
+                isAdmin: true,
+                lastAccess: new Date().toISOString(),
+                permissions: ['all']
+            };
+            
+            localStorage.setItem(STORAGE_KEYS.ADMIN_DATA, JSON.stringify(adminInfo));
+            return true;
+        } catch (error) {
+            console.error('Error saving admin data:', error);
+            return false;
+        }
+    },
+
+    // Get current user/admin
     getCurrentUser: () => {
-        const userStr = localStorage.getItem('user');
-        return userStr ? JSON.parse(userStr) : null;
+        try {
+            const userStr = localStorage.getItem(STORAGE_KEYS.USER_DATA);
+            if (userStr) {
+                return JSON.parse(userStr);
+            }
+            
+            // Check if admin is logged in
+            const adminStr = localStorage.getItem(STORAGE_KEYS.ADMIN_DATA);
+            if (adminStr) {
+                return JSON.parse(adminStr);
+            }
+            
+            return null;
+        } catch (error) {
+            console.error('Error getting current user:', error);
+            return null;
+        }
     },
 
-    // Set user session
-    setSession: (token, user) => {
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('user', JSON.stringify(user));
+    // Get all registered users (excluding admin)
+    getAllUsers: () => {
+        try {
+            const usersStr = localStorage.getItem(STORAGE_KEYS.USERS_LIST);
+            return usersStr ? JSON.parse(usersStr) : [];
+        } catch (error) {
+            console.error('Error getting all users:', error);
+            return [];
+        }
+    },
+
+    // Get user by ID or email
+    getUser: (identifier) => {
+        const users = storageManager.getAllUsers();
+        return users.find(user => 
+            user.id === identifier || 
+            user.email === identifier ||
+            user.username === identifier
+        );
+    },
+
+    // Update user data
+    updateUser: (identifier, updates) => {
+        try {
+            const users = storageManager.getAllUsers();
+            const userIndex = users.findIndex(user => 
+                user.id === identifier || 
+                user.email === identifier
+            );
+            
+            if (userIndex !== -1) {
+                users[userIndex] = {
+                    ...users[userIndex],
+                    ...updates,
+                    updatedAt: new Date().toISOString()
+                };
+                
+                localStorage.setItem(STORAGE_KEYS.USERS_LIST, JSON.stringify(users));
+                
+                // Update current session if it's the same user
+                const currentUser = storageManager.getCurrentUser();
+                if (currentUser && (currentUser.email === identifier || currentUser.id === identifier)) {
+                    localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(users[userIndex]));
+                }
+                
+                return true;
+            }
+            
+            return false;
+        } catch (error) {
+            console.error('Error updating user:', error);
+            return false;
+        }
+    },
+
+    // Delete user
+    deleteUser: (identifier) => {
+        try {
+            let users = storageManager.getAllUsers();
+            const initialLength = users.length;
+            
+            users = users.filter(user => 
+                user.id !== identifier && 
+                user.email !== identifier
+            );
+            
+            if (users.length < initialLength) {
+                localStorage.setItem(STORAGE_KEYS.USERS_LIST, JSON.stringify(users));
+                
+                // Clear current session if deleted user is logged in
+                const currentUser = storageManager.getCurrentUser();
+                if (currentUser && (currentUser.email === identifier || currentUser.id === identifier)) {
+                    storageManager.clearSession();
+                }
+                
+                return true;
+            }
+            
+            return false;
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            return false;
+        }
+    },
+
+    // Session Management
+    setSession: (token, userData) => {
+        try {
+            // Save token
+            localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
+            
+            // Set session expiry (24 hours)
+            const expiry = new Date();
+            expiry.setHours(expiry.getHours() + 24);
+            localStorage.setItem(STORAGE_KEYS.SESSION_EXPIRY, expiry.toISOString());
+            
+            // Save user data
+            if (userData.email === ADMIN_EMAIL) {
+                storageManager.saveAdmin(userData);
+            } else {
+                storageManager.saveUser(userData);
+            }
+            
+            // Log the login
+            storageManager.logActivity(userData.email, 'login', 'User logged in successfully');
+            
+            return true;
+        } catch (error) {
+            console.error('Error setting session:', error);
+            return false;
+        }
+    },
+
+    // Check session validity
+    isSessionValid: () => {
+        const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+        const expiryStr = localStorage.getItem(STORAGE_KEYS.SESSION_EXPIRY);
+        
+        if (!token || !expiryStr) return false;
+        
+        const expiry = new Date(expiryStr);
+        const now = new Date();
+        
+        return now < expiry;
     },
 
     // Clear session
     clearSession: () => {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
+        const currentUser = storageManager.getCurrentUser();
+        if (currentUser) {
+            storageManager.logActivity(currentUser.email, 'logout', 'User logged out');
+        }
+        
+        localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+        localStorage.removeItem(STORAGE_KEYS.USER_DATA);
+        localStorage.removeItem(STORAGE_KEYS.ADMIN_DATA);
+        localStorage.removeItem(STORAGE_KEYS.SESSION_EXPIRY);
+        localStorage.removeItem(STORAGE_KEYS.REMEMBER_ME);
+    },
+
+    // Activity Logging
+    logActivity: (userEmail, action, details) => {
+        try {
+            const logsStr = localStorage.getItem(STORAGE_KEYS.LOGS);
+            const logs = logsStr ? JSON.parse(logsStr) : [];
+            
+            const logEntry = {
+                id: Date.now().toString(),
+                userEmail,
+                action,
+                details,
+                timestamp: new Date().toISOString(),
+                ip: 'N/A' // Can be enhanced with actual IP if available
+            };
+            
+            logs.unshift(logEntry); // Add to beginning
+            
+            // Keep only last 100 logs
+            if (logs.length > 100) {
+                logs.pop();
+            }
+            
+            localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(logs));
+        } catch (error) {
+            console.error('Error logging activity:', error);
+        }
+    },
+
+    // Get activity logs
+    getActivityLogs: (limit = 50) => {
+        try {
+            const logsStr = localStorage.getItem(STORAGE_KEYS.LOGS);
+            const logs = logsStr ? JSON.parse(logsStr) : [];
+            return logs.slice(0, limit);
+        } catch (error) {
+            console.error('Error getting activity logs:', error);
+            return [];
+        }
+    },
+
+    // Statistics
+    getStats: () => {
+        const users = storageManager.getAllUsers();
+        const logs = storageManager.getActivityLogs(1000);
+        
+        const totalUsers = users.length;
+        const activeUsers = users.filter(u => u.isActive !== false).length;
+        const today = new Date().toDateString();
+        const todayLogins = logs.filter(log => 
+            log.action === 'login' && 
+            new Date(log.timestamp).toDateString() === today
+        ).length;
+        
+        return {
+            totalUsers,
+            activeUsers,
+            todayLogins,
+            lastActivity: logs[0] || null
+        };
+    },
+
+    // Backup and Restore
+    backupData: () => {
+        try {
+            const data = {
+                users: storageManager.getAllUsers(),
+                logs: storageManager.getActivityLogs(1000),
+                timestamp: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            return JSON.stringify(data);
+        } catch (error) {
+            console.error('Error backing up data:', error);
+            return null;
+        }
+    },
+
+    // Clear all data (for testing/reset)
+    clearAllData: () => {
+        Object.values(STORAGE_KEYS).forEach(key => {
+            localStorage.removeItem(key);
+        });
+    }
+};
+
+// Enhanced Utility Functions
+const utils = {
+    // Check if user is logged in with valid session
+    isLoggedIn: () => {
+        return storageManager.isSessionValid();
+    },
+
+    // Get current user
+    getCurrentUser: () => {
+        return storageManager.getCurrentUser();
+    },
+
+    // Check if current user is admin
+    isAdmin: () => {
+        const user = storageManager.getCurrentUser();
+        return user && user.email === ADMIN_EMAIL;
+    },
+
+    // Set user session
+    setSession: (token, user) => {
+        return storageManager.setSession(token, user);
+    },
+
+    // Clear session
+    clearSession: () => {
+        storageManager.clearSession();
     },
 
     // Redirect based on user role
     redirectUser: (user) => {
         if (user.email === ADMIN_EMAIL) {
+            storageManager.saveAdmin(user);
             window.location.href = 'admin_panel.html';
         } else {
             window.location.href = 'dashboard.html';
@@ -72,481 +383,153 @@ const utils = {
         if (messageEl) {
             messageEl.style.display = 'none';
         }
+    },
+
+    // Admin Functions
+    admin: {
+        // Get all users
+        getAllUsers: () => {
+            if (!utils.isAdmin()) {
+                console.error('Access denied: Admin privileges required');
+                return [];
+            }
+            return storageManager.getAllUsers();
+        },
+
+        // Get user by ID
+        getUserById: (userId) => {
+            if (!utils.isAdmin()) {
+                console.error('Access denied: Admin privileges required');
+                return null;
+            }
+            return storageManager.getUser(userId);
+        },
+
+        // Update user
+        updateUser: (userId, updates) => {
+            if (!utils.isAdmin()) {
+                console.error('Access denied: Admin privileges required');
+                return false;
+            }
+            return storageManager.updateUser(userId, updates);
+        },
+
+        // Delete user
+        deleteUser: (userId) => {
+            if (!utils.isAdmin()) {
+                console.error('Access denied: Admin privileges required');
+                return false;
+            }
+            return storageManager.deleteUser(userId);
+        },
+
+        // Get activity logs
+        getLogs: (limit = 50) => {
+            if (!utils.isAdmin()) {
+                console.error('Access denied: Admin privileges required');
+                return [];
+            }
+            return storageManager.getActivityLogs(limit);
+        },
+
+        // Get statistics
+        getStats: () => {
+            if (!utils.isAdmin()) {
+                console.error('Access denied: Admin privileges required');
+                return null;
+            }
+            return storageManager.getStats();
+        },
+
+        // Backup data
+        backupData: () => {
+            if (!utils.isAdmin()) {
+                console.error('Access denied: Admin privileges required');
+                return null;
+            }
+            return storageManager.backupData();
+        },
+
+        // Restore from backup (for future implementation)
+        restoreBackup: (backupData) => {
+            if (!utils.isAdmin()) {
+                console.error('Access denied: Admin privileges required');
+                return false;
+            }
+            // Implementation would depend on backup format
+            console.log('Restore backup functionality to be implemented');
+            return false;
+        }
     }
 };
 
-// Validation Functions
-const validators = {
-    // Validate full name
-    validateFullName: (name) => {
-        if (!name || name.trim().length < 2) {
-            return { valid: false, message: 'Name must be at least 2 characters' };
-        }
-        if (!/^[a-zA-Z\s]+$/.test(name)) {
-            return { valid: false, message: 'Name can only contain letters and spaces' };
-        }
-        return { valid: true, message: '' };
-    },
-
-    // Validate username
-    validateUsername: (username) => {
-        if (!username || username.length < 3) {
-            return { valid: false, message: 'Username must be at least 3 characters' };
-        }
-        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-            return { valid: false, message: 'Username can only contain letters, numbers, and underscores' };
-        }
-        return { valid: true, message: '' };
-    },
-
-    // Validate email
-    validateEmail: (email) => {
-        if (!email) {
-            return { valid: false, message: 'Email is required' };
-        }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return { valid: false, message: 'Please enter a valid email address' };
-        }
-        return { valid: true, message: '' };
-    },
-
-    // Validate phone
-    validatePhone: (phone) => {
-        if (!phone) {
-            return { valid: false, message: 'Phone number is required' };
-        }
-        const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-        if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
-            return { valid: false, message: 'Please enter a valid phone number' };
-        }
-        return { valid: true, message: '' };
-    },
-
-    // Validate password
-    validatePassword: (password) => {
-        if (!password || password.length < 8) {
-            return { valid: false, message: 'Password must be at least 8 characters' };
-        }
-        if (!/(?=.*[a-z])/.test(password)) {
-            return { valid: false, message: 'Password must contain at least one lowercase letter' };
-        }
-        if (!/(?=.*[A-Z])/.test(password)) {
-            return { valid: false, message: 'Password must contain at least one uppercase letter' };
-        }
-        if (!/(?=.*\d)/.test(password)) {
-            return { valid: false, message: 'Password must contain at least one number' };
-        }
-        return { valid: true, message: '' };
-    },
-
-    // Check password strength
-    checkPasswordStrength: (password) => {
-        let strength = 0;
-        if (password.length >= 8) strength++;
-        if (password.length >= 12) strength++;
-        if (/(?=.*[a-z])/.test(password)) strength++;
-        if (/(?=.*[A-Z])/.test(password)) strength++;
-        if (/(?=.*\d)/.test(password)) strength++;
-        if (/(?=.*[@$!%*?&])/.test(password)) strength++;
-
-        if (strength <= 2) return 'weak';
-        if (strength <= 4) return 'medium';
-        return 'strong';
-    },
-
-    // Validate confirm password
-    validateConfirmPassword: (password, confirmPassword) => {
-        if (!confirmPassword) {
-            return { valid: false, message: 'Please confirm your password' };
-        }
-        if (password !== confirmPassword) {
-            return { valid: false, message: 'Passwords do not match' };
-        }
-        return { valid: true, message: '' };
-    }
-};
-
-// Display error in form field
-function showFieldError(fieldId, errorId, message) {
-    const field = document.getElementById(fieldId);
-    const errorEl = document.getElementById(errorId);
-
-    if (field) {
-        field.classList.remove('success');
-        field.classList.add('error');
-    }
-
-    if (errorEl) {
-        errorEl.textContent = message;
-    }
-}
-
-// Clear field error
-function clearFieldError(fieldId, errorId) {
-    const field = document.getElementById(fieldId);
-    const errorEl = document.getElementById(errorId);
-
-    if (field) {
-        field.classList.remove('error', 'success');
-    }
-
-    if (errorEl) {
-        errorEl.textContent = '';
-    }
-}
-
-// Show field success
-function showFieldSuccess(fieldId) {
-    const field = document.getElementById(fieldId);
-    if (field) {
-        field.classList.remove('error');
-        field.classList.add('success');
-    }
-}
-
-// Signup Form Handler
-if (document.getElementById('signupForm')) {
-    const signupForm = document.getElementById('signupForm');
-    const submitBtn = document.getElementById('submitBtn');
-
-    // Real-time validation
-    const fullnameInput = document.getElementById('fullname');
-    const usernameInput = document.getElementById('username');
-    const emailInput = document.getElementById('email');
-    const phoneInput = document.getElementById('phone');
-    const passwordInput = document.getElementById('password');
-    const confirmPasswordInput = document.getElementById('confirmPassword');
-    const termsInput = document.getElementById('terms');
-
-    // Full name validation
-    if (fullnameInput) {
-        fullnameInput.addEventListener('blur', () => {
-            const result = validators.validateFullName(fullnameInput.value);
-            if (result.valid) {
-                clearFieldError('fullname', 'fullnameError');
-                showFieldSuccess('fullname');
-            } else {
-                showFieldError('fullname', 'fullnameError', result.message);
-            }
-        });
-    }
-
-    // Username validation
-    if (usernameInput) {
-        usernameInput.addEventListener('blur', () => {
-            const result = validators.validateUsername(usernameInput.value);
-            if (result.valid) {
-                clearFieldError('username', 'usernameError');
-                showFieldSuccess('username');
-            } else {
-                showFieldError('username', 'usernameError', result.message);
-            }
-        });
-    }
-
-    // Email validation
-    if (emailInput) {
-        emailInput.addEventListener('blur', () => {
-            const result = validators.validateEmail(emailInput.value);
-            if (result.valid) {
-                clearFieldError('email', 'emailError');
-                showFieldSuccess('email');
-            } else {
-                showFieldError('email', 'emailError', result.message);
-            }
-        });
-    }
-
-    // Phone validation
-    if (phoneInput) {
-        phoneInput.addEventListener('blur', () => {
-            const result = validators.validatePhone(phoneInput.value);
-            if (result.valid) {
-                clearFieldError('phone', 'phoneError');
-                showFieldSuccess('phone');
-            } else {
-                showFieldError('phone', 'phoneError', result.message);
-            }
-        });
-    }
-
-    // Password validation with strength indicator
-    if (passwordInput) {
-        passwordInput.addEventListener('input', () => {
-            const password = passwordInput.value;
-            const strengthEl = document.getElementById('passwordStrength');
-
-            if (password) {
-                const strength = validators.checkPasswordStrength(password);
-                if (strengthEl) {
-                    strengthEl.className = `password-strength ${strength}`;
-                    strengthEl.innerHTML = `<div class="password-strength-bar"></div>`;
-                }
-            } else {
-                if (strengthEl) {
-                    strengthEl.className = 'password-strength';
-                    strengthEl.innerHTML = '';
-                }
-            }
-        });
-
-        passwordInput.addEventListener('blur', () => {
-            const result = validators.validatePassword(passwordInput.value);
-            if (result.valid) {
-                clearFieldError('password', 'passwordError');
-                showFieldSuccess('password');
-            } else {
-                showFieldError('password', 'passwordError', result.message);
-            }
-        });
-    }
-
-    // Confirm password validation
-    if (confirmPasswordInput && passwordInput) {
-        confirmPasswordInput.addEventListener('blur', () => {
-            const result = validators.validateConfirmPassword(
-                passwordInput.value,
-                confirmPasswordInput.value
-            );
-            if (result.valid) {
-                clearFieldError('confirmPassword', 'confirmPasswordError');
-                showFieldSuccess('confirmPassword');
-            } else {
-                showFieldError('confirmPassword', 'confirmPasswordError', result.message);
-            }
-        });
-    }
-
-    // Form submission
-    signupForm.addEventListener('submit', async(e) => {
-        e.preventDefault();
-        utils.hideMessage('formMessage');
-
-        // Get form values
-        const fullname = fullnameInput.value.trim();
-        const username = usernameInput.value.trim();
-        const email = emailInput.value.trim();
-        const phone = phoneInput.value.trim();
-        const password = passwordInput.value;
-        const confirmPassword = confirmPasswordInput.value;
-        const terms = termsInput.checked;
-
-        // Validate all fields
-        let isValid = true;
-
-        const fullnameResult = validators.validateFullName(fullname);
-        if (!fullnameResult.valid) {
-            showFieldError('fullname', 'fullnameError', fullnameResult.message);
-            isValid = false;
-        }
-
-        const usernameResult = validators.validateUsername(username);
-        if (!usernameResult.valid) {
-            showFieldError('username', 'usernameError', usernameResult.message);
-            isValid = false;
-        }
-
-        const emailResult = validators.validateEmail(email);
-        if (!emailResult.valid) {
-            showFieldError('email', 'emailError', emailResult.message);
-            isValid = false;
-        }
-
-        const phoneResult = validators.validatePhone(phone);
-        if (!phoneResult.valid) {
-            showFieldError('phone', 'phoneError', phoneResult.message);
-            isValid = false;
-        }
-
-        const passwordResult = validators.validatePassword(password);
-        if (!passwordResult.valid) {
-            showFieldError('password', 'passwordError', passwordResult.message);
-            isValid = false;
-        }
-
-        const confirmPasswordResult = validators.validateConfirmPassword(password, confirmPassword);
-        if (!confirmPasswordResult.valid) {
-            showFieldError('confirmPassword', 'confirmPasswordError', confirmPasswordResult.message);
-            isValid = false;
-        }
-
-        if (!terms) {
-            const termsError = document.getElementById('termsError');
-            if (termsError) {
-                termsError.textContent = 'You must agree to the terms and conditions';
-            }
-            isValid = false;
-        }
-
-        if (!isValid) {
-            utils.showMessage('formMessage', 'Please fix the errors above', 'error');
-            return;
-        }
-
-        // Disable submit button
-        submitBtn.disabled = true;
-        submitBtn.querySelector('.btn-text').style.display = 'none';
-        submitBtn.querySelector('.btn-loader').style.display = 'inline-block';
-
-        try {
-            // Send signup request
-            const response = await fetch(`${API_BASE_URL}/signup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    fullname,
-                    username,
-                    email,
-                    phone,
-                    password
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                utils.showMessage('formMessage', 'Account created successfully! Redirecting...', 'success');
-                // Set session and redirect
-                utils.setSession(data.token, data.user);
-                setTimeout(() => {
-                    utils.redirectUser(data.user);
-                }, 1500);
-            } else {
-                utils.showMessage('formMessage', data.message || 'Signup failed. Please try again.', 'error');
-                submitBtn.disabled = false;
-                submitBtn.querySelector('.btn-text').style.display = 'inline';
-                submitBtn.querySelector('.btn-loader').style.display = 'none';
-            }
-        } catch (error) {
-            console.error('Signup error:', error);
-            utils.showMessage('formMessage', 'Network error. Please try again.', 'error');
-            submitBtn.disabled = false;
-            submitBtn.querySelector('.btn-text').style.display = 'inline';
-            submitBtn.querySelector('.btn-loader').style.display = 'none';
-        }
-    });
-}
-
-// Login Form Handler
-if (document.getElementById('loginForm')) {
-    const loginForm = document.getElementById('loginForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const showPasswordCheckbox = document.getElementById('showPassword');
-    const passwordInput = document.getElementById('password');
-
-    // Show/hide password
-    if (showPasswordCheckbox && passwordInput) {
-        showPasswordCheckbox.addEventListener('change', () => {
-            passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
-        });
-    }
-
-    // Email validation
-    const emailInput = document.getElementById('email');
-    if (emailInput) {
-        emailInput.addEventListener('blur', () => {
-            const result = validators.validateEmail(emailInput.value);
-            if (result.valid) {
-                clearFieldError('email', 'emailError');
-                showFieldSuccess('email');
-            } else {
-                showFieldError('email', 'emailError', result.message);
-            }
-        });
-    }
-
-    // Form submission
-    loginForm.addEventListener('submit', async(e) => {
-        e.preventDefault();
-        utils.hideMessage('formMessage');
-
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-        const remember = document.getElementById('remember').checked;
-
-        // Validate email
-        const emailResult = validators.validateEmail(email);
-        if (!emailResult.valid) {
-            showFieldError('email', 'emailError', emailResult.message);
-            utils.showMessage('formMessage', 'Please fix the errors above', 'error');
-            return;
-        }
-
-        if (!password) {
-            showFieldError('password', 'passwordError', 'Password is required');
-            utils.showMessage('formMessage', 'Please fix the errors above', 'error');
-            return;
-        }
-
-        // Disable submit button
-        submitBtn.disabled = true;
-        submitBtn.querySelector('.btn-text').style.display = 'none';
-        submitBtn.querySelector('.btn-loader').style.display = 'inline-block';
-
-        try {
-            // Send login request
-            const response = await fetch(`${API_BASE_URL}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    password,
-                    remember
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                utils.showMessage('formMessage', 'Login successful! Redirecting...', 'success');
-                // Set session and redirect
-                utils.setSession(data.token, data.user);
-
-                if (remember) {
-                    // Store remember me preference
-                    localStorage.setItem('rememberMe', 'true');
-                }
-
-                setTimeout(() => {
-                    utils.redirectUser(data.user);
-                }, 1500);
-            } else {
-                utils.showMessage('formMessage', data.message || 'Invalid email or password', 'error');
-                submitBtn.disabled = false;
-                submitBtn.querySelector('.btn-text').style.display = 'inline';
-                submitBtn.querySelector('.btn-loader').style.display = 'none';
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            utils.showMessage('formMessage', 'Network error. Please try again.', 'error');
-            submitBtn.disabled = false;
-            submitBtn.querySelector('.btn-text').style.display = 'inline';
-            submitBtn.querySelector('.btn-loader').style.display = 'none';
-        }
-    });
-}
-
-// Check if user is already logged in (redirect if on login/signup pages)
-if (window.location.pathname.includes('login.html') || window.location.pathname.includes('signup.html')) {
-    if (utils.isLoggedIn()) {
-        const user = utils.getCurrentUser();
+// Check and validate session on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-check session validity
+    if (storageManager.isSessionValid()) {
+        const user = storageManager.getCurrentUser();
         if (user) {
-            utils.redirectUser(user);
+            console.log(`Session active for user: ${user.email}`);
+            
+            // Redirect if on login/signup pages
+            if (window.location.pathname.includes('login.html') || 
+                window.location.pathname.includes('signup.html')) {
+                utils.redirectUser(user);
+            }
         }
+    } else {
+        // Clear invalid session
+        storageManager.clearSession();
     }
-}
-
-// Logout function (can be called from anywhere)
-window.logout = function() {
-    utils.clearSession();
-    window.location.href = 'login.html';
-};
+});
 
 // Export for use in other scripts
 window.authUtils = utils;
+window.storageManager = storageManager;
 window.validators = validators;
+
+// Initialize storage with admin user if not exists
+function initializeStorage() {
+    const users = storageManager.getAllUsers();
+    const adminExists = users.some(user => user.email === ADMIN_EMAIL);
+    
+    if (!adminExists) {
+        const adminUser = {
+            id: 'admin_001',
+            fullname: 'System Administrator',
+            username: 'admin',
+            email: ADMIN_EMAIL,
+            phone: '+1234567890',
+            role: 'admin',
+            createdAt: new Date().toISOString(),
+            lastLogin: null,
+            isActive: true
+        };
+        
+        storageManager.saveUser(adminUser);
+        console.log('Admin user initialized in storage');
+    }
+}
+
+// Initialize on load
+setTimeout(initializeStorage, 1000);
+
+// Enhanced Logout function with storage cleanup
+window.logout = function() {
+    storageManager.clearSession();
+    window.location.href = 'login.html';
+};
+
+// Function to display user profile (for dashboard)
+window.displayUserProfile = function() {
+    const user = storageManager.getCurrentUser();
+    if (!user) return null;
+    
+    return {
+        name: user.fullname || user.username,
+        email: user.email,
+        role: user.role || 'user',
+        lastLogin: user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'First login',
+        memberSince: user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'
+    };
+};
