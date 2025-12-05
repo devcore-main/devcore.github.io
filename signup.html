@@ -416,6 +416,9 @@ form.addEventListener('submit', async e => {
     submitBtn.querySelector('.btn-loader').style.display = 'none';
 });
 </script>
+// تحميل التيم من localStorage
+const savedTheme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
 
 </body>
 </html>
