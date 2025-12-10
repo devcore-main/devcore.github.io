@@ -1,1209 +1,356 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/dev-core/forntemd/css/style.css">
-    <title>Admin Panel - DEV-CORE</title>
-    <script defer src = "admin.js"></script>
-<style>
-        :root {
-            /* Dark Theme (Default) */
-            --primary-color: #8f44ff;
-            --secondary-color: #6a25ff;
-            --background-color: #0d0d0d;
-            --card-bg: #111;
-            --card-border: #333;
-            --text-color: #fff;
-            --text-secondary: #aaa;
-            --input-bg: #1a1a1a;
-            --input-border: #333;
-            --danger-color: #ff6b6b;
-            --success-color: #00ff88;
-            --header-gradient: linear-gradient(135deg, #6a25ff, #3c0a99);
-            --footer-bg: #0b0b0b;
-        }
-
-        [data-theme="light"] {
-            /* Light Theme */
-            --primary-color: #6a25ff;
-            --secondary-color: #8f44ff;
-            --background-color: #f5f5f5;
-            --card-bg: #ffffff;
-            --card-border: #e0e0e0;
-            --text-color: #333;
-            --text-secondary: #666;
-            --input-bg: #ffffff;
-            --input-border: #ddd;
-            --danger-color: #ff4757;
-            --success-color: #2ed573;
-            --header-gradient: linear-gradient(135deg, #8f44ff, #6a25ff);
-            --footer-bg: #ffffff;
-        }
-
-        /* ===== GLOBAL STYLE ===== */
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
-        }
-        
-        body {
-            background: #0d0d0d;
-            color: #fff;
-            line-height: 1.6;
-        }
-        /* ===== HEADER ===== */
-        
-        header {
-            background: linear-gradient(135deg, #6a25ff, #3c0a99);
-            padding: 40px 20px;
-            text-align: center;
-            border-bottom: 2px solid #8f44ff;
-        }
-        
-        header h1 {
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-        
-        header p {
-            opacity: 0.8;
-            margin-top: 5px;
-        }
-        
-        header ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            gap: 20px;
-        }
-        
-        header ul li a {
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: 0.3s ease;
-            font-weight: bold;
-        }
-        
-        header ul li a:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        /* ===== ADMIN CONTAINER ===== */
-        
-        .admin-container {
-            max-width: 1600px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        /* ===== ADMIN STATS SECTION ===== */
-        
-        .admin-stats-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        
-        .stat-card {
-            background: #111;
-            padding: 25px;
-            border-radius: 14px;
-            border: 1px solid #333;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            transition: 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: #8f44ff;
-        }
-        
-        .stat-icon {
-            font-size: 3rem;
-        }
-        
-        .stat-info h3 {
-            font-size: 0.9rem;
-            opacity: 0.7;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #b788ff;
-            margin-bottom: 5px;
-        }
-        
-        .stat-change {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-        
-        .stat-change.positive {
-            color: #00ff88;
-        }
-        /* ===== ADMIN GRID ===== */
-        
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 30px;
-        }
-        
-        .admin-section {
-            background: #111;
-            padding: 25px;
-            border-radius: 14px;
-            border: 1px solid #333;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .admin-section h2 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #b788ff;
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-        }
-        
-        .section-header h2 {
-            border: none;
-            margin: 0;
-            padding: 0;
-        }
-        /* ===== BUTTONS ===== */
-        
-        .btn-add {
-            background: #8f44ff;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-        
-        .btn-add:hover {
-            background: #6a25ff;
-            transform: translateY(-2px);
-        }
-        
-        .btn-small {
-            background: #8f44ff;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: none;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-        
-        .btn-small:hover {
-            background: #6a25ff;
-        }
-        
-        .btn-small.danger {
-            background: #ff4444;
-        }
-        
-        .btn-small.danger:hover {
-            background: #cc0000;
-        }
-        
-        .btn-icon {
-            background: transparent;
-            border: none;
-            color: #8f44ff;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 5px;
-            transition: 0.3s ease;
-        }
-        
-        .btn-icon:hover {
-            transform: scale(1.2);
-        }
-        /* ===== SEARCH BAR ===== */
-        
-        .search-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .search-bar input,
-        .search-bar select {
-            flex: 1;
-            padding: 10px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 0.9rem;
-        }
-        
-        .search-bar input:focus,
-        .search-bar select:focus {
-            outline: none;
-            border-color: #8f44ff;
-        }
-        /* ===== TABLE ===== */
-        
-        .table-container {
-            overflow-x: auto;
-            margin-bottom: 20px;
-        }
-        
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .admin-table thead {
-            background: #1a1a1a;
-        }
-        
-        .admin-table th {
-            padding: 12px;
-            text-align: left;
-            font-weight: bold;
-            color: #b788ff;
-            border-bottom: 2px solid #333;
-        }
-        
-        .admin-table td {
-            padding: 12px;
-            border-bottom: 1px solid #222;
-        }
-        
-        .admin-table tbody tr:hover {
-            background: #1a1a1a;
-        }
-        
-        .badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .badge.user {
-            background: #8f44ff;
-            color: #fff;
-        }
-        
-        .badge.admin {
-            background: #ff6b6b;
-            color: #fff;
-        }
-        
-        .status {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .status.active {
-            background: #00ff88;
-            color: #000;
-        }
-        
-        .status.inactive {
-            background: #666;
-            color: #fff;
-        }
-        /* ===== PAGINATION ===== */
-        
-        .pagination {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-        }
-        
-        .page-btn {
-            background: #1a1a1a;
-            color: #fff;
-            padding: 8px 16px;
-            border: 1px solid #333;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-        
-        .page-btn:hover {
-            background: #8f44ff;
-            border-color: #8f44ff;
-        }
-        
-        .page-info {
-            opacity: 0.7;
-        }
-        /* ===== COURSE ADMIN LIST ===== */
-        
-        .course-admin-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .course-admin-item {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #222;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .course-admin-info h3 {
-            margin-bottom: 8px;
-            color: #fff;
-        }
-        
-        .course-admin-info p {
-            opacity: 0.7;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-        
-        .course-tags {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .tag {
-            background: #8f44ff;
-            color: #fff;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-        
-        .course-admin-actions {
-            display: flex;
-            gap: 10px;
-        }
-        /* ===== ANALYTICS ===== */
-        
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .analytics-item {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        
-        .analytics-item h4 {
-            margin-bottom: 15px;
-            color: #b788ff;
-        }
-        
-        .chart-placeholder {
-            background: #0d0d0d;
-            padding: 40px;
-            border-radius: 8px;
-            text-align: center;
-            border: 2px dashed #333;
-        }
-        
-        .chart-note {
-            font-size: 0.85rem;
-            opacity: 0.7;
-            margin-top: 10px;
-        }
-        
-        .revenue-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .revenue-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            background: #0d0d0d;
-            border-radius: 6px;
-        }
-        
-        .revenue-amount {
-            color: #00ff88;
-            font-weight: bold;
-        }
-        /* ===== ADMIN ACTIONS GRID ===== */
-        
-        .admin-actions-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .admin-action-card {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #222;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s ease;
-            color: #fff;
-            border: none;
-        }
-        
-        .admin-action-card:hover {
-            transform: translateY(-5px);
-            border-color: #8f44ff;
-            background: #1f1f1f;
-        }
-        
-        .admin-action-card .action-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .admin-action-card h3 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-            color: #b788ff;
-        }
-        
-        .admin-action-card p {
-            font-size: 0.85rem;
-            opacity: 0.7;
-        }
-        /* ===== ADMIN ACTIVITY LIST ===== */
-        
-        .admin-activity-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .admin-activity-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: #1a1a1a;
-            border-radius: 10px;
-            border-left: 3px solid #8f44ff;
-        }
-        
-        .admin-activity-item .activity-icon {
-            font-size: 1.5rem;
-        }
-        
-        .admin-activity-item .activity-content {
-            flex: 1;
-        }
-        
-        .admin-activity-item .activity-content p {
-            margin-bottom: 5px;
-        }
-        
-        .admin-activity-item .activity-time {
-            font-size: 0.8rem;
-            opacity: 0.6;
-        }
-        /* ===== SETTINGS LIST ===== */
-        
-        .settings-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .setting-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: #1a1a1a;
-            border-radius: 10px;
-        }
-        
-        .setting-info h4 {
-            margin-bottom: 5px;
-            color: #fff;
-        }
-        
-        .setting-info p {
-            font-size: 0.85rem;
-            opacity: 0.7;
-        }
-        /* ===== TOGGLE SWITCH ===== */
-        
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #333;
-            transition: 0.3s;
-            border-radius: 24px;
-        }
-        
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.3s;
-            border-radius: 50%;
-        }
-        
-        .toggle-switch input:checked+.toggle-slider {
-            background-color: #8f44ff;
-        }
-        
-        .toggle-switch input:checked+.toggle-slider:before {
-            transform: translateX(26px);
-        }
-        /* ===== FOOTER ===== */
-        
-        footer {
-            background: #0b0b0b;
-            padding: 30px 20px;
-            margin-top: 50px;
-        }
-        
-        footer ul {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            gap: 20px;
-        }
-        
-        footer ul li a {
-            color: #8f44ff;
-            font-weight: bold;
-            text-decoration: none;
-            transition: 0.3s ease;
-        }
-        
-        footer ul li a:hover {
-            text-decoration: underline;
-        }
-        /* ===== MATERIALS MANAGEMENT ===== */
-        
-        .materials-controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .materials-course-select {
-            flex: 1;
-            padding: 10px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1rem;
-        }
-        
-        .materials-course-select:focus {
-            outline: none;
-            border-color: #8f44ff;
-        }
-        
-        .materials-list-container {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
-            min-height: 200px;
-        }
-        
-        .material-admin-item {
-            background: #0d0d0d;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #222;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .material-admin-info h4 {
-            margin-bottom: 8px;
-            color: #fff;
-        }
-        
-        .material-admin-info p {
-            opacity: 0.7;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-        
-        .material-content-preview {
-            opacity: 0.6;
-            font-size: 0.85rem;
-            margin-top: 8px;
-        }
-        /* ===== ADMIN MODAL ===== */
-        
-        .admin-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            overflow: auto;
-        }
-        
-        .admin-modal-content {
-            background: #111;
-            margin: 5% auto;
-            padding: 40px;
-            border: 1px solid #333;
-            border-radius: 14px;
-            width: 90%;
-            max-width: 600px;
-            position: relative;
-        }
-        
-        .admin-modal-content h2 {
-            color: #b788ff;
-            margin-bottom: 25px;
-        }
-        
-        .close-admin-modal {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-        
-        .close-admin-modal:hover {
-            color: #8f44ff;
-        }
-        
-        .admin-modal-content .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .admin-modal-content .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #fff;
-        }
-        
-        .admin-modal-content .form-group input,
-        .admin-modal-content .form-group textarea,
-        .admin-modal-content .form-group select {
-            width: 100%;
-            padding: 12px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1rem;
-            font-family: inherit;
-        }
-        
-        .admin-modal-content .form-group input:focus,
-        .admin-modal-content .form-group textarea:focus,
-        .admin-modal-content .form-group select:focus {
-            outline: none;
-            border-color: #8f44ff;
-        }
-        
-        .admin-modal-content .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .admin-modal-content .btn-submit {
-            width: 100%;
-            padding: 14px;
-            background: #8f44ff;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s ease;
-            margin-top: 10px;
-        }
-        
-        .admin-modal-content .btn-submit:hover {
-            background: #6a25ff;
-        }
-        /* ===== RESPONSIVE ===== */
-        
-        @media (max-width: 768px) {
-            .admin-grid {
-                grid-template-columns: 1fr;
-            }
-            .admin-stats-section {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .admin-actions-grid {
-                grid-template-columns: 1fr;
-            }
-            .section-header {
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
-            }
-            .table-container {
-                overflow-x: scroll;
-            }
-            header h1 {
-                font-size: 1.8rem;
-            }
-            .materials-controls {
-                flex-direction: column;
-            }
-            .admin-modal-content .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    <header id="header">
-        <h1>Admin Panel</h1>
-        <p>Manage your platform and users</p>
-        <ul>
-            <li><a href='index.html'>Home</a></li>
-            <li><a href='dashboard.html'>Dashboard</a></li>
-            <li><a href='admin_panel.html'>Admin Panel</a></li>
-        </ul>
+    <!-- Header Navigation -->
+    <header class="admin-header">
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>CYBER<span class="logo-accent">ADMIN</span></span>
+            </div>
+        </div>
+        
+        <nav class="header-nav">
+            <ul>
+                <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="admin_panel.html" class="nav-link active"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
+            </ul>
+        </nav>
+        
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-details">
+                <span class="user-name">Admin User</span>
+                <span class="user-role">Super Administrator</span>
+            </div>
+        </div>
     </header>
 
-    <div class="admin-container">
-        <!-- Admin Stats Section -->
-        <section class="admin-stats-section">
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Admin Stats -->
+        <section class="admin-stats">
             <div class="stat-card">
-                <div class="stat-icon">👥</div>
-                <div class="stat-info">
+                <divع class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
                     <h3>Total Users</h3>
-                    <p class="stat-number">0</p>
-                    <span class="stat-change positive">+12% this month</span>
+                    <p class="stat-number" id="totalUsers">0</p>
                 </div>
             </div>
+            
             <div class="stat-card">
-                <div class="stat-icon">📚</div>
-                <div class="stat-info">
-                    <h3>Total Courses</h3>
-                    <p class="stat-number">0</p>
-                    <span class="stat-change positive">+3 new</span>
+                <div class="stat-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>Active Courses</h3>
+                    <p class="stat-number" id="totalCourses">0</p>
                 </div>
             </div>
+            
             <div class="stat-card">
-                <div class="stat-icon">💰</div>
-                <div class="stat-info">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>Materials</h3>
+                    <p class="stat-number" id="totalMaterials">0</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
                     <h3>Revenue</h3>
-                    <p class="stat-number">0.00LE</p>
-                    <span class="stat-change positive">+8% this month</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">✅</div>
-                <div class="stat-info">
-                    <h3>Active Enrollments</h3>
-                    <p class="stat-number">892</p>
-                    <span class="stat-change positive">+156 active</span>
+                    <p class="stat-number">$<span id="totalRevenue">0</span></p>
                 </div>
             </div>
         </section>
-
-        <!-- Main Admin Grid -->
-        <div class="admin-grid">
-            <!-- User Management Section -->
-            <section class="admin-section">
-                <div class="section-header">
-                    <h2>User Management</h2>
-                    <button class="btn-add">+ Add User</button>
-                </div>
-                <div class="search-bar">
-                    <input type="text" placeholder="Search users..." id="userSearch">
-                    <select id="userFilter">
+ع
+        <!-- User Management Section -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2><i class="fas fa-user-cog"></i> User Management</h2>
+                <div class="section-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="userSearch" placeholder="Search users...">
+                    </div>
+                    <select id="userFilter" class="filter-select">
                         <option value="all">All Users</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
                         <option value="admin">Admins</option>
+                        <option value="student">Students</option>
+                        <option value="instructor">Instructors</option>
                     </select>
+                    <button class="btn btn-add" id="addUserBtn">
+                        <i class="fas fa-plus"></i> Add User
+                    </button>
                 </div>
-                <div class="table-container">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#1001</td>
-                                <td>Ahmed Mohamed</td>
-                                <td>ahmed@example.com</td>
-                                <td><span class="badge user">User</span></td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn-icon" title="Edit">✏️</button>
-                                    <button class="btn-icon" title="Delete">🗑️</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#1002</td>
-                                <td>Sarah Ali</td>
-                                <td>sarah@example.com</td>
-                                <td><span class="badge user">User</span></td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn-icon" title="Edit">✏️</button>
-                                    <button class="btn-icon" title="Delete">🗑️</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#1003</td>
-                                <td>Mohamed Hassan</td>
-                                <td>mohamed@example.com</td>
-                                <td><span class="badge admin">Admin</span></td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn-icon" title="Edit">✏️</button>
-                                    <button class="btn-icon" title="Delete">🗑️</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#1004</td>
-                                <td>Fatima Ibrahim</td>
-                                <td>fatima@example.com</td>
-                                <td><span class="badge user">User</span></td>
-                                <td><span class="status inactive">Inactive</span></td>
-                                <td>
-                                    <button class="btn-icon" title="Edit">✏️</button>
-                                    <button class="btn-icon" title="Delete">🗑️</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="pagination">
-                    <button class="page-btn">Previous</button>
-                    <span class="page-info">Page 1 of 10</span>
-                    <button class="page-btn">Next</button>
-                </div>
-            </section>
+            </div>
+            
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Joined Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-            <!-- Course Management Section -->
-            <section class="admin-section">
-                <div class="section-header">
-                    <h2>Course Management</h2>
-                    <button class="btn-add" onclick="showAddCourseModal()">+ Add Course</button>
-                </div>
-                <div class="course-admin-list" id="coursesList">
-                    <!-- Courses will be loaded dynamically -->
-                    <div class="loading">Loading courses...</div>
-                </div>
-            </section>
+        <!-- Course Management Section -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2><i class="fas fa-graduation-cap"></i> Course Management</h2>
+                <button class="btn btn-add" onclick="showAddCourseModal()">
+                    <i class="fas fa-plus"></i> Add Course
+                </button>
+            </div>
+            
+            <div class="cards-container" id="coursesList">
+                <!-- Courses will be loaded here -->
+            </div>
+        </section>
 
-            <!-- Course Materials Management Section -->
-            <section class="admin-section">
-                <div class="section-header">
-                    <h2>Course Materials Management</h2>
-                </div>
-                <div class="materials-controls">
-                    <select id="materialsCourseSelect" class="materials-course-select">
-                        <option value="">Select a course...</option>
+        <!-- Course Materials Section -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2><i class="fas fa-folder-open"></i> Course Materials</h2>
+                <div class="section-controls">
+                    <select id="materialsCourseSelect" class="filter-select">
+                        <option value="">Select a course</option>
                     </select>
-                    <button class="btn-add" onclick="showAddMaterialModal()" id="addMaterialBtn" disabled>+ Add Material</button>
-                </div>
-                <div class="materials-list-container" id="materialsList">
-                    <p style="text-align: center; opacity: 0.7; padding: 40px;">Select a course to manage its materials</p>
-                </div>
-            </section>
-
-            <!-- Analytics Section -->
-            <section class="admin-section">
-                <h2>Analytics Overview</h2>
-                <div class="analytics-grid">
-                    <div class="analytics-item">
-                        <h4>Enrollment Trends</h4>
-                        <div class="chart-placeholder">
-                            <p>📈 Chart visualization</p>
-                            <p class="chart-note">Last 30 days: +15% growth</p>
-                        </div>
-                    </div>
-                    <div class="analytics-item">
-                        <h4>Revenue Breakdown</h4>
-                        <div class="revenue-list">
-                            <div class="revenue-item">
-                                <span>Front-End</span>
-                                <span class="revenue-amount">$12,450</span>
-                            </div>
-                            <div class="revenue-item">
-                                <span>Backend</span>
-                                <span class="revenue-amount">$15,200</span>
-                            </div>
-                            <div class="revenue-item">
-                                <span>Cybersecurity</span>
-                                <span class="revenue-amount">$9,800</span>
-                            </div>
-                            <div class="revenue-item">
-                                <span>AI</span>
-                                <span class="revenue-amount">$8,228</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Quick Actions Section -->
-            <section class="admin-section">
-                <h2>Quick Actions</h2>
-                <div class="admin-actions-grid">
-                    <button class="admin-action-card">
-                        <div class="action-icon">📧</div>
-                        <h3>Send Email</h3>
-                        <p>Send bulk emails</p>
-                    </button>
-                    <button class="admin-action-card">
-                        <div class="action-icon">📊</div>
-                        <h3>Generate Report</h3>
-                        <p>Export analytics</p>
-                    </button>
-                    <button class="admin-action-card">
-                        <div class="action-icon">⚙️</div>
-                        <h3>Settings</h3>
-                        <p>Platform settings</p>
-                    </button>
-                    <button class="admin-action-card">
-                        <div class="action-icon">🔒</div>
-                        <h3>Security</h3>
-                        <p>Manage security</p>
+                    <button class="btn btn-add" id="addMaterialBtn">
+                        <i class="fas fa-plus"></i> Add Material
                     </button>
                 </div>
-            </section>
+            </div>
+            
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Material ID</th>
+                            <th>Title</th>
+                            <th>Course</th>
+                            <th>Type</th>
+                            <th>Upload Date</th>
+                            <th>Size</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="materialsList">
+                        <!-- Materials will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-            <!-- Recent Activity Section -->
-            <section class="admin-section">
-                <h2>Recent Activity</h2>
-                <div class="admin-activity-list">
-                    <div class="admin-activity-item">
-                        <div class="activity-icon">👤</div>
-                        <div class="activity-content">
-                            <p><strong>New user registered:</strong> Ahmed Mohamed</p>
-                            <span class="activity-time">2 hours ago</span>
-                        </div>
+        <!-- Recent Activity -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2><i class="fas fa-history"></i> Recent Activity</h2>
+            </div>
+            
+            <div class="activity-container">
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-user-plus"></i>
                     </div>
-                    <div class="admin-activity-item">
-                        <div class="activity-icon">📚</div>
-                        <div class="activity-content">
-                            <p><strong>Course created:</strong> Mobile App Development</p>
-                            <span class="activity-time">5 hours ago</span>
-                        </div>
-                    </div>
-                    <div class="admin-activity-item">
-                        <div class="activity-icon">💰</div>
-                        <div class="activity-content">
-                            <p><strong>Payment received:</strong> $500 from Sarah Ali</p>
-                            <span class="activity-time">1 day ago</span>
-                        </div>
-                    </div>
-                    <div class="admin-activity-item">
-                        <div class="activity-icon">✅</div>
-                        <div class="activity-content">
-                            <p><strong>Certificate issued:</strong> Cybersecurity - Mohamed Hassan</p>
-                            <span class="activity-time">2 days ago</span>
-                        </div>
+                    <div class="activity-content">
+                        <h4>New user registered</h4>
+                        <p>John Doe signed up for Cybersecurity course</p>
+                        <span class="activity-time">10 minutes ago</span>
                     </div>
                 </div>
-            </section>
-
-            <!-- System Settings Section -->
-            <section class="admin-section">
-                <h2>System Settings</h2>
-                <div class="settings-list">
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Maintenance Mode</h4>
-                            <p>Enable maintenance mode for all users</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox">
-                            <span class="toggle-slider"></span>
-                        </label>
+                
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-book"></i>
                     </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Email Notifications</h4>
-                            <p>Send email notifications to users</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Auto Backup</h4>
-                            <p>Automatically backup database daily</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Two-Factor Authentication</h4>
-                            <p>Require 2FA for admin accounts</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox">
-                            <span class="toggle-slider"></span>
-                        </label>
+                    <div class="activity-content">
+                        <h4>Course updated</h4>
+                        <p>Advanced Penetration Testing course materials were updated</p>
+                        <span class="activity-time">2 hours ago</span>
                     </div>
                 </div>
-            </section>
+                
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-file-upload"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h4>New material added</h4>
+                        <p>Added new lab exercise to Network Security course</p>
+                        <span class="activity-time">5 hours ago</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- Add Course Modal -->
+    <div class="modal" id="addCourseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus-circle"></i> Add New Course</h3>
+                <button class="modal-close" onclick="closeModal('addCourseModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="courseForm">
+                    <div class="form-group">
+                        <label for="courseId">Course ID</label>
+                        <input type="text" id="courseId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseTitle">Course Title</label>
+                        <input type="text" id="courseTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseDescription">Description</label>
+                        <textarea id="courseDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="coursePrice">Price ($)</label>
+                            <input type="number" id="coursePrice" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="courseDuration">Duration (weeks)</label>
+                            <input type="number" id="courseDuration" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseCategory">Category</label>
+                        <select id="courseCategory">
+                            <option value="cybersecurity">Cybersecurity</option>
+                            <option value="networking">Networking</option>
+                            <option value="programming">Programming</option>
+                            <option value="ethical-hacking">Ethical Hacking</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addCourseModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveCourse()">Save Course</button>
+            </div>
         </div>
     </div>
 
-    <footer id="footer">
-        <ul>
-            <li><a target="_blank" href="mailto:devcore.communicate@gmail.com">email</a></li>
-            <li><a target="_blank" href="tel:+966359797419">telphone</a></li>
-            <li><a target="_blank" href="https://www.instagram.com/dev.core.egy">insta</a></li>
-        </ul>
-    </footer>
-
-    <!-- Add Course Modal -->
-    <div id="addCourseModal" class="admin-modal">
-        <div class="admin-modal-content">
-            <span class="close-admin-modal" onclick="closeAddCourseModal()">&times;</span>
-            <h2>Add New Course</h2>
-            <form id="addCourseForm">
-                <div class="form-group">
-                    <label>Title *</label>
-                    <input type="text" id="courseTitle" required>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="courseDescription" rows="4"></textarea>
-                </div>
-                <div class="form-row">
+    <!-- Add User Modal -->
+    <div class="modal" id="addUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> Add New User</h3>
+                <button class="modal-close" onclick="closeModal('addUserModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
                     <div class="form-group">
-                        <label>Price (L.E) *</label>
-                        <input type="number" id="coursePrice" required min="0" step="0.01">
+                        <label for="userName">Full Name</label>
+                        <input type="text" id="userName" required>
                     </div>
                     <div class="form-group">
-                        <label>Category</label>
-                        <select id="courseCategory">
-                            <option value="Web Development">Web Development</option>
-                            <option value="Security">Security</option>
-                            <option value="Artificial Intelligence">Artificial Intelligence</option>
-                            <option value="Desktop">Desktop</option>
-                            <option value="Mobile">Mobile</option>
-                        </select>
+                        <label for="userEmail">Email Address</label>
+                        <input type="email" id="userEmail" required>
                     </div>
-                </div>
-                <button type="submit" class="btn-submit">Create Course</button>
-            </form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="userPassword">Password</label>
+                            <input type="password" id="userPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userRole">Role</label>
+                            <select id="userRole">
+                                <option value="student">Student</option>
+                                <option value="instructor">Instructor</option>
+                                <option value="admin">Administrator</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addUserModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveUser()">Save User</button>
+            </div>
         </div>
     </div>
 
     <!-- Add Material Modal -->
-    <div id="addMaterialModal" class="admin-modal">
-        <div class="admin-modal-content">
-            <span class="close-admin-modal" onclick="closeAddMaterialModal()">&times;</span>
-            <h2>Add Course Material</h2>
-            <form id="addMaterialForm">
-                <div class="form-group">
-                    <label>Title *</label>
-                    <input type="text" id="materialTitle" required>
-                </div>
-                <div class="form-group">
-                    <label>Content</label>
-                    <textarea id="materialContent" rows="6" placeholder="Enter material content, notes, or description..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Material Type</label>
-                    <select id="materialType">
-                        <option value="lesson">Lesson</option>
-                        <option value="video">Video</option>
-                        <option value="assignment">Assignment</option>
-                        <option value="quiz">Quiz</option>
-                        <option value="resource">Resource</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-submit">Add Material</button>
-            </form>
+    <div class="modal" id="addMaterialModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-upload"></i> Add Course Material</h3>
+                <button class="modal-close" onclick="closeModal('addMaterialModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="materialForm">
+                    <div class="form-group">
+                        <label for="materialTitle">Material Title</label>
+                        <input type="text" id="materialTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="materialCourse">Course</label>
+                        <select id="materialCourse" required>
+                            <option value="">Select a course</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="materialType">Type</label>
+                            <select id="materialType">
+                                <option value="pdf">PDF Document</option>
+                                <option value="video">Video</option>
+                                <option value="quiz">Quiz</option>
+                                <option value="lab">Lab Exercise</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="materialFile">Upload File</label>
+                            <input type="file" id="materialFile">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="materialDescription">Description</label>
+                        <textarea id="materialDescription" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addMaterialModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveMaterial()">Save Material</button>
+            </div>
         </div>
     </div>
 
-    <script src="../js/admin.js"></script>
-<script src="../js/auth.js"></script>
-<script> 
-const savedTheme = localStorage.getItem('theme') || 'dark';
-document.documentElement.setAttribute('data-theme', savedTheme);
-</script> 
+    <script src="script.js"></script>
 </body>
-
 </html>
